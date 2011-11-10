@@ -36,7 +36,7 @@ local PostCreateIcon = function(Auras, button)
 	button.overlay.Hide = function(self) self:SetVertexColor(0.3, 0.3, 0.3) end
 	
 	button.cd:SetReverse()
-	button.cd.noCooldownCount = true
+	button.cd.noCooldownCount = not oUF_DArc_SavedVars['ShowIconCDCount']
 end
 
 local PostUpdateIcon

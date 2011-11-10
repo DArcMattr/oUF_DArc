@@ -35,6 +35,7 @@ local oUF_DArc_Defaults = {
   ["ShowBuffsOnPlayer"] = false,
   ["ShowDebuffsOnPlayer"] = false,
   ["PlayerBuffsOnRight"] = false,
+  ["ShowIconCDCount"] = true,
   ["ShowBuffsOnTarget"] = true,
   ["ShowDebuffsOnTarget"] = true,
   ["TargetBuffsOnRight"] = true,
@@ -149,6 +150,7 @@ table.insert(checkbuttons, oUF_DArc_GenerateCheckbutton(panels[#panels], 'ShowDe
 table.insert(checkbuttons, oUF_DArc_GenerateCheckbutton(panels[#panels], 'FocusBuffsOnRight', "Focus buffs on right", 215, -200))
 table.insert(checkbuttons, oUF_DArc_GenerateCheckbutton(panels[#panels], 'ShowDebuffsOnTot', "Show debuffs on target of target", 15, -250))
 table.insert(checkbuttons, oUF_DArc_GenerateCheckbutton(panels[#panels], 'HideBuffsAndDebuffsFromOthers', "Hide buffs and debuffs from others", 15, -300))
+table.insert(checkbuttons, oUF_DArc_GenerateCheckbutton(panels[#panels], 'ShowIconCDCount', "Show Cooldown Count |cFFFF0000(needs ui reload)", 15, -325))
 table.insert(sliders, oUF_DArc_GenerateSlider(panels[4], 'BuffsPerRow', "Buffs per row |cFFFF0000(needs ui reload)|cFFFFFFFF", 1, 30, 1, 125, -380))
 
 addon:RegisterEvent("ADDON_LOADED")
