@@ -5,7 +5,7 @@ local font = 'GameFontHighlightSmallLeft'
 
 local frame_width = 220
 local frame_height = 56
-local frame_pct_offset = 30
+local frame_pct_offset = 28
 -- local frame_width = oUF_DArc_SavedVars.LargeFrameWidth
 local barheight = 18
 
@@ -114,16 +114,15 @@ function oUF_DArc_AddNameBar(self)
 	self.Name = CreateFrame('StatusBar', nil, self)
 	self.Name:SetStatusBarTexture(bartexture)
 	self.Name:SetHeight(barheight)
-  self.Name:SetWidth(frame_width-frame_height)
+  self.Name:SetWidth(frame_width-frame_height-2)
 	self.Name:SetFrameLevel(5)
 
 	self.Name:SetParent(self)
 	self.Name:SetPoint('TOP')
   if self.unit == "target" then
-    self.Name:SetPoint('RIGHT', self.Portrait, 'LEFT')
     self.Name:SetPoint('LEFT')
   else
-    self.Name:SetPoint('LEFT', self.Portrait, 'RIGHT')
+    self.Name:SetPoint('RIGHT')
   end
 	
   self.Name:SetStatusBarColor(UnitSelectionColor(self.unit))
@@ -145,7 +144,7 @@ function oUF_DArc_AddHealthBar(self)
   if self.unit == "target" then
     self.Health:SetPoint('LEFT')
   else
-    self.Health:SetPoint('LEFT', self.Portrait, 'RIGHT')
+    self.Health:SetPoint('LEFT', self.Portrait, 'RIGHT',2,0)
   end
 	
 	self.Health.colorTapping = true
@@ -161,9 +160,10 @@ end
 
 function oUF_DArc_AddLevelBlock(self)
 	self.Level = CreateFrame('StatusBar', nil, self)
-  self.Level:SetHeight(barheight)
-  self.Level:SetWidth(frame_pct_offset/2)
 	self.Level:SetStatusBarTexture(bartexture)
+  self.Level:SetHeight(barheight)
+  self.Level:SetStatusBarColor(.25,.25,.25)
+  self.Level:SetWidth(frame_pct_offset/2)
   if self.unit == "target" then
     self.Level:SetPoint('TOPLEFT',self,'TOPRIGHT',5,0)
   else
@@ -209,7 +209,7 @@ function oUF_DArc_AddPowerBar(self)
   if self.unit == "target" then
     self.Power:SetPoint('LEFT')
   else
-    self.Power:SetPoint('LEFT', self.Portrait, 'RIGHT')
+    self.Power:SetPoint('LEFT', self.Portrait, 'RIGHT',2,0)
   end
 
 	self.Power.colorPower = true
@@ -307,7 +307,7 @@ function oUF_DArc_AddCastBar(self, x, y)
 	self.Castbar.Time:SetTextColor(1, 1, 1)
 	
 	self.Castbar.Icon = self.Castbar:CreateTexture(nil, 'ARTWORK')
-  self.Castbar.Icon:SetSize(21,21)
+  self.Castbar.Icon:SetSize(barheight,barheight)
 	self.Castbar.Icon:SetTexCoord(0, 1, 0, 1)
   if self.unit == "target" then
     self.Castbar.Icon:SetPoint('RIGHT', self.Castbar, 'LEFT')
