@@ -47,7 +47,9 @@ local oUF_DArc_Defaults = {
   ["PetBuffsOnRight"] = false,
   ["ShowDebuffsOnTot"] = false,
   ["BuffsPerRow"] = 30,
-  ["HideBuffsAndDebuffsFromOthers"] = false
+  ["HideBuffsAndDebuffsFromOthers"] = false,
+  ["LargeFrameWidth"] = 300,
+  ["SmallFrameWidth"] = 200
 };
 
 local function SetDefaultOptions()

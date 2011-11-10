@@ -1,9 +1,10 @@
-local bartexture = 'Interface\\AddOns\\oUF_DArc\\texture\\plain'
+local bartexture = [[Interface\AddOns\SharedMedia\statusbar\minimalist.tga]]
 local bufftexture = 'Interface\\AddOns\\oUF_DArc\\texture\\buff'
 local backdrop = {bgFile = [=[Interface\ChatFrame\ChatFrameBackground]=], insets = {top = -2, left = -2, bottom = -2, right = -2}}
 local font = 'GameFontHighlightSmallLeft'
 
 local width = 300
+-- local width = oUF_DArc_SavedVars.LargeFrameWidth
 local barheight = 18
 
 oUF.colors.power['MANA'] = {26/255, 139/255, 255/255}
@@ -40,7 +41,7 @@ local PostCreateIcon = function(Auras, button)
 	button.overlay.Hide = function(self) self:SetVertexColor(0.3, 0.3, 0.3) end
 	
 	button.cd:SetReverse()
-	button.cd.noCooldownCount = not oUF_DArc_SavedVars['ShowIconCDCount']
+	button.cd.noCooldownCount = not oUF_DArc_SavedVars.ShowIconCDCount
 end
 
 local PostUpdateIcon
@@ -80,19 +81,43 @@ function oUF_DArc_SetupFrame(self)
 	self.backdrop2:SetFrameLevel(3)
 end
 
+function oUF_DArc_AddNameBar(self)
+	self.Name = CreateFrame('StatusBar', nil, self)
+	self.Name:SetStatusBarTexture(bartexture)
+	self.Name:SetHeight(barheight)
+
+	self.Name:SetParent(self)
+	self.Name:SetPoint'TOP'
+	self.Name:SetPoint'LEFT'
+	self.Name:SetPoint'RIGHT'
+	
+	self.Name.colorTapping = true
+	self.Name:SetFrameLevel(5)
+
+	local unitname = self.Name:CreateFontString(nil, 'OVERLAY', font)
+	self:Tag(unitname,'[name]')
+	unitname:SetPoint('LEFT', self.Name, 2, 0)
+  unitname.colorReaction = true
+
+	local level = self.Name:CreateFontString(nil, 'OVERLAY', font)
+	self:Tag(level,'[level]')
+	level:SetPoint('RIGHT', self.Name, -3, 0)
+  level.colorClass = true
+end
+
 function oUF_DArc_AddHealthBar(self)
 	self.Health = CreateFrame('StatusBar', nil, self)
 	self.Health:SetStatusBarTexture(bartexture)
 	self.Health:SetHeight(barheight)
+	self.Health:SetPoint('TOP', self.Name, 'BOTTOM', 0, -1)
 
 	self.Health:SetParent(self)
-	self.Health:SetPoint'TOP'
 	self.Health:SetPoint'LEFT'
 	self.Health:SetPoint'RIGHT'
 	
-	self.Health.colorClass = true
+	self.Health.colorSmooth = true
 	self.Health.colorTapping = true
-	self.Health.colorReaction = true
+--	self.Health.colorReaction = true
 	self.Health.Smooth = true
 	self.Health:SetFrameLevel(5)
 end
@@ -208,8 +233,14 @@ function oUF_DArc_AddCastBar(self, x, y)
 	self.Castbar:SetBackdrop(backdrop)
 	self.Castbar:SetBackdropColor(0, 0, 0)
 	self.Castbar:SetWidth(width)
-	self.Castbar:SetHeight(17)
+	self.Castbar:SetHeight(barheight)
 	self.Castbar:SetStatusBarTexture(bartexture)
+
+	self.Castbar:SetParent(self)
+	self.Castbar:SetPoint'TOP'
+	self.Castbar:SetPoint'LEFT'
+	self.Castbar:SetPoint'RIGHT'
+	self.Castbar:SetFrameLevel(6)
 	
 	self.Castbar.Text = self.Castbar:CreateFontString(nil, 'OVERLAY', font)
 	self.Castbar.Text:SetPoint('LEFT', self.Castbar, 2, 0)
@@ -640,7 +671,7 @@ end
 
 function oUF_DArc_ApplyOptions()
 	ApplyVisibility()
-	oUF_DArc_ApplyCastbarOptions()
+--	oUF_DArc_ApplyCastbarOptions()
 	ApplyBuffOptions(oUF_player, 'ShowBuffsOnPlayer', 'ShowDebuffsOnPlayer', 'PlayerBuffsOnRight')
 	ApplyBuffOptions(oUF_target, 'ShowBuffsOnTarget', 'ShowDebuffsOnTarget', 'TargetBuffsOnRight')
 	ApplyBuffOptions(oUF_pet, 'ShowBuffsOnPet', 'ShowDebuffsOnPet', 'PetBuffsOnRight')
