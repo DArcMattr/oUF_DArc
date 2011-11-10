@@ -1,4 +1,4 @@
-local bartexture = 'Interface\\AddOns\\oUF_Lure\\texture\\plain'
+local bartexture = 'Interface\\AddOns\\oUF_DArc\\texture\\plain'
 local backdrop = {bgFile = [=[Interface\ChatFrame\ChatFrameBackground]=], insets = {top = -2, left = -2, bottom = -2, right = -2}}
 local font = 'GameFontHighlightSmallLeft'
 local raid
@@ -24,7 +24,7 @@ end
 
 oUF.TagEvents["smartname"] = "UNIT_HEALTH PLAYER_FLAGS_CHANGED"
 oUF.Tags['smartname'] = function(u) 
-	return not UnitIsConnected(u) and 'Offline' or UnitIsAFK(u) and '<AFK>' or UnitIsGhost(u) and 'Ghost' or UnitIsDead(u) and 'Dead' or UnitName(u):sub(1, oUF_Lure_SavedVars.RaidNameLength) 
+	return not UnitIsConnected(u) and 'Offline' or UnitIsAFK(u) and '<AFK>' or UnitIsGhost(u) and 'Ghost' or UnitIsDead(u) and 'Dead' or UnitName(u):sub(1, oUF_DArc_SavedVars.RaidNameLength) 
 end
 
 local function LayoutRaid(self, unit)
@@ -36,8 +36,8 @@ local function LayoutRaid(self, unit)
 
 	self:SetAttribute('*type2', 'menu')
 	
-	self:SetWidth(oUF_Lure_SavedVars.RaidFrameWidth)
-	self:SetHeight(oUF_Lure_SavedVars.RaidFrameHeight)
+	self:SetWidth(oUF_DArc_SavedVars.RaidFrameWidth)
+	self:SetHeight(oUF_DArc_SavedVars.RaidFrameHeight)
 
 	self:SetBackdrop(backdrop)
 	self:SetBackdropColor(0, 0, 0)
@@ -76,7 +76,7 @@ local function LayoutRaid(self, unit)
 	local mhpb = CreateFrame('StatusBar', nil, self.Health)
 	mhpb:SetPoint('TOPLEFT', self.Health:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)
 	mhpb:SetPoint('BOTTOMLEFT', self.Health:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
-	mhpb:SetWidth(oUF_Lure_SavedVars.RaidFrameWidth-1)
+	mhpb:SetWidth(oUF_DArc_SavedVars.RaidFrameWidth-1)
 	mhpb:SetStatusBarTexture(bartexture)
 	mhpb:SetStatusBarColor(0, 1, 0.5, 0.25)
 	mhpb:SetFrameLevel(4)
@@ -84,7 +84,7 @@ local function LayoutRaid(self, unit)
 	local ohpb = CreateFrame('StatusBar', nil, self.Health)
 	ohpb:SetPoint('TOPLEFT', mhpb:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)
 	ohpb:SetPoint('BOTTOMLEFT', mhpb:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
-	ohpb:SetWidth(oUF_Lure_SavedVars.RaidFrameWidth-2)
+	ohpb:SetWidth(oUF_DArc_SavedVars.RaidFrameWidth-2)
 	ohpb:SetStatusBarTexture(bartexture)
 	ohpb:SetStatusBarColor(0, 1, 0, 0.25)
 	ohpb:SetFrameLevel(4)
@@ -119,19 +119,19 @@ local function ApplyPositionsAndSizes()
 		local raidgroup = _G['oUF_Raid'..i]
 		
 		if (raidgroup ~= nil) then
-			raidgroup:SetAttribute("yOffSet", -oUF_Lure_SavedVars.RaidSpacingVertical)
-			raidgroup:SetAttribute("showParty", oUF_Lure_SavedVars.ShowParty)
-			raidgroup:SetAttribute("showRaid", oUF_Lure_SavedVars.ShowRaid)
+			raidgroup:SetAttribute("yOffSet", -oUF_DArc_SavedVars.RaidSpacingVertical)
+			raidgroup:SetAttribute("showParty", oUF_DArc_SavedVars.ShowParty)
+			raidgroup:SetAttribute("showRaid", oUF_DArc_SavedVars.ShowRaid)
 			
-			if i > oUF_Lure_SavedVars.NumRaidGroups then
+			if i > oUF_DArc_SavedVars.NumRaidGroups then
 				raidgroup:SetAttribute("showRaid", false)
 			end
 			
 			for j = 1, 5 do
 				local raidmember = _G['oUF_Raid'..i..'UnitButton'..j]
 				if (raidmember) then
-					raidmember:SetWidth(oUF_Lure_SavedVars.RaidFrameWidth)
-					raidmember:SetHeight(oUF_Lure_SavedVars.RaidFrameHeight)
+					raidmember:SetWidth(oUF_DArc_SavedVars.RaidFrameWidth)
+					raidmember:SetHeight(oUF_DArc_SavedVars.RaidFrameHeight)
 					raidmember.AltPowerBar:SetHeight(raidmember:GetHeight() + 4)
 					raidmember.AltPowerBar:SetWidth(raidmember:GetWidth() + 4)
 				end
@@ -140,13 +140,13 @@ local function ApplyPositionsAndSizes()
 	end
 end
 
-function oUF_Lure_ApplyPartyRaidOptions()
+function oUF_DArc_ApplyPartyRaidOptions()
 	ApplyPositionsAndSizes()
 end
 
-function oUF_Lure_SpawnPartyRaid(self)
+function oUF_DArc_SpawnPartyRaid(self)
 	
-	if oUF_Lure_SavedVars.HideBlizzardParty then
+	if oUF_DArc_SavedVars.HideBlizzardParty then
 		for i = 1, 4 do
 			local party = "PartyMemberFrame" .. i
 			local frame = _G[party]
@@ -160,7 +160,7 @@ function oUF_Lure_SpawnPartyRaid(self)
 		end
 	end
 	
-	if oUF_Lure_SavedVars.HideBlizzardRaid then
+	if oUF_DArc_SavedVars.HideBlizzardRaid then
 		CompactRaidFrameManager:UnregisterAllEvents()
 		CompactRaidFrameManager.Show = CompactRaidFrameManager.Hide
 		CompactRaidFrameManager:Hide()
@@ -187,5 +187,5 @@ function oUF_Lure_SpawnPartyRaid(self)
 	end
 
 	
-	oUF_Lure_ApplyPartyRaidOptions()
+	oUF_DArc_ApplyPartyRaidOptions()
 end

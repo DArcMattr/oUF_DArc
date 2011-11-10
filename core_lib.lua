@@ -1,5 +1,5 @@
-local bartexture = 'Interface\\AddOns\\oUF_Lure\\texture\\plain'
-local bufftexture = 'Interface\\AddOns\\oUF_Lure\\texture\\buff'
+local bartexture = 'Interface\\AddOns\\oUF_DArc\\texture\\plain'
+local bufftexture = 'Interface\\AddOns\\oUF_DArc\\texture\\buff'
 local backdrop = {bgFile = [=[Interface\ChatFrame\ChatFrameBackground]=], insets = {top = -2, left = -2, bottom = -2, right = -2}}
 local font = 'GameFontHighlightSmallLeft'
 oUF.colors.power['MANA'] = {26/255, 139/255, 255/255}
@@ -59,7 +59,7 @@ do
 	end
 end
 
-function oUF_Lure_SetupFrame(self)
+function oUF_DArc_SetupFrame(self)
 	self.menu = menu
 	self:RegisterForClicks('AnyDown')
 	self:SetScript('OnEnter', UnitFrame_OnEnter)
@@ -76,7 +76,7 @@ function oUF_Lure_SetupFrame(self)
 	self.backdrop2:SetFrameLevel(3)
 end
 
-function oUF_Lure_AddHealthBar(self)
+function oUF_DArc_AddHealthBar(self)
 	self.Health = CreateFrame('StatusBar', nil, self)
 	self.Health:SetStatusBarTexture(bartexture)
 	self.Health:SetHeight(18)
@@ -93,31 +93,31 @@ function oUF_Lure_AddHealthBar(self)
 	self.Health:SetFrameLevel(5)
 end
 
-function oUF_Lure_AddHealthBarTextHealth(self)
+function oUF_DArc_AddHealthBarTextHealth(self)
 	local health = self.Health:CreateFontString(nil, 'OVERLAY', font)
 	health:SetPoint('RIGHT', self.Health, -3, 0)
 	self:Tag(health,'[curhp]/[maxhp]')
 end
 
-function oUF_Lure_AddHealthBarTextNameLeft(self)
+function oUF_DArc_AddHealthBarTextNameLeft(self)
 	local unitnames = self.Health:CreateFontString(nil, 'OVERLAY', font)
 	self:Tag(unitnames,'[name]')
 	unitnames:SetPoint('LEFT', self.Health, 2, 0)
 end
 
-function oUF_Lure_AddHealthBarTextNameCenter(self)
+function oUF_DArc_AddHealthBarTextNameCenter(self)
 	local unitnames = self.Health:CreateFontString(nil, 'OVERLAY', font)
 	self:Tag(unitnames,'[name]')
 	unitnames:SetPoint('CENTER', self, 0, 0)
 end
 
-function oUF_Lure_AddHealthBarTextPercent(self)
+function oUF_DArc_AddHealthBarTextPercent(self)
 	local healthpercent = self.Health:CreateFontString(nil, 'OVERLAY', font)
 	healthpercent:SetPoint('CENTER', self.Health, 0, 0)
 	self:Tag(healthpercent,'[perhp]%')
 end
 
-function oUF_Lure_AddPowerBar(self)
+function oUF_DArc_AddPowerBar(self)
 	self.Power = CreateFrame('StatusBar', nil, self)
 	self.Power:SetStatusBarTexture(bartexture)
 	self.Power:SetHeight(18)
@@ -133,25 +133,25 @@ function oUF_Lure_AddPowerBar(self)
 	self.Power.frequentUpdates = true
 end
 
-function oUF_Lure_AddPowerBarTextPower(self)
+function oUF_DArc_AddPowerBarTextPower(self)
 	local power = self.Power:CreateFontString(nil, 'OVERLAY', font)
 	power:SetPoint('RIGHT', self.Power, -3, 0)
 	self:Tag(power,'[curpp]/[maxpp]')
 end
 
-function oUF_Lure_AddPowerBarTextPercent(self)
+function oUF_DArc_AddPowerBarTextPercent(self)
 	local powerpercent = self.Health:CreateFontString(nil, 'OVERLAY', font)
 	powerpercent:SetPoint('CENTER', self.Power, 0, 0)
 	self:Tag(powerpercent,'[perpp]%')
 end
 
-function oUF_Lure_AddPowerBarTextLevel(self)
+function oUF_DArc_AddPowerBarTextLevel(self)
 	local level = self.Power:CreateFontString(nil, 'OVERLAY', font)
 	level:SetPoint('LEFT', self.Power, 2, 0)
 	self:Tag(level,'[level]')
 end
 
-function oUF_Lure_AddRaidIcons(self)
+function oUF_DArc_AddRaidIcons(self)
 	self.RaidIcon = self.Health:CreateTexture(nil, 'OVERLAY')
 	self.RaidIcon:SetHeight(16)
 	self.RaidIcon:SetWidth(16)
@@ -159,7 +159,7 @@ function oUF_Lure_AddRaidIcons(self)
 	self.RaidIcon:SetTexture'Interface\\TargetingFrame\\UI-RaidTargetingIcons'
 end
 
-function oUF_Lure_AddBuffs(self)
+function oUF_DArc_AddBuffs(self)
 	self.Buffs = CreateFrame('Frame', nil, self)
 	self.Buffs.size = 21
 	self.Buffs:SetHeight(self.Buffs.size)
@@ -169,7 +169,7 @@ function oUF_Lure_AddBuffs(self)
 	self.Buffs.PostUpdateIcon = PostUpdateIcon
 end
 
-function oUF_Lure_AddDebuffs(self)
+function oUF_DArc_AddDebuffs(self)
 	self.Debuffs = CreateFrame('Frame', nil, self)
 	self.Debuffs.size = 21
 	self.Debuffs:SetHeight(self.Debuffs.size)
@@ -179,7 +179,7 @@ function oUF_Lure_AddDebuffs(self)
 	self.Debuffs.PostUpdateIcon = PostUpdateIcon
 end
 
-function oUF_Lure_AddCombatIcon(self)
+function oUF_DArc_AddCombatIcon(self)
 	self.CombatIcon = self.Health:CreateTexture(nil, 'OVERLAY')
 	self.CombatIcon:SetPoint('CENTER', self.Power, 'TOPLEFT', -20, 1)
 	self.CombatIcon:SetHeight(26)
@@ -189,7 +189,7 @@ function oUF_Lure_AddCombatIcon(self)
 	self.Combat = self.CombatIcon
 end
 
-function oUF_Lure_AddRestingIcon(self)
+function oUF_DArc_AddRestingIcon(self)
 	self.RestingIcon = self.Health:CreateTexture(nil, 'OVERLAY')
 	self.RestingIcon:SetPoint('CENTER', self.Power, 'TOPLEFT', -20, 1)
 	self.RestingIcon:SetHeight(26)
@@ -199,7 +199,7 @@ function oUF_Lure_AddRestingIcon(self)
 	self.Resting = self.RestingIcon 
 end
 
-function oUF_Lure_AddCastBar(self, x, y)
+function oUF_DArc_AddCastBar(self, x, y)
 	self.Castbar = CreateFrame('StatusBar', nil, self)
 	self.Castbar:SetBackdrop(backdrop)
 	self.Castbar:SetBackdropColor(0, 0, 0)
@@ -229,7 +229,7 @@ function oUF_Lure_AddCastBar(self, x, y)
 	self.Castbar:SetPoint('CENTER', self, x, y)
 end
 
-function oUF_Lure_AddRunes(self)
+function oUF_DArc_AddRunes(self)
 	if class == 'DEATHKNIGHT' then
 		local runes = CreateFrame('Frame', nil, self)
 		runes:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -1)
@@ -264,7 +264,7 @@ function oUF_Lure_AddRunes(self)
 	end
 end
 
-function oUF_Lure_AddEclipse(self)
+function oUF_DArc_AddEclipse(self)
 	if class == 'DRUID' then
 		local eclipseBar = CreateFrame('Frame', nil, self)
 		eclipseBar:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -1)
@@ -290,7 +290,7 @@ function oUF_Lure_AddEclipse(self)
 	end
 end
 
-function oUF_Lure_AddCombopoints(self)
+function oUF_DArc_AddCombopoints(self)
 	if (class == 'DRUID' or class == 'ROGUE') then
 		local combopoints = CreateFrame('StatusBar', nil, self)
 		combopoints:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -2)
@@ -317,7 +317,7 @@ function oUF_Lure_AddCombopoints(self)
 	end
 end
 
-function oUF_Lure_AddSoulShards(self)
+function oUF_DArc_AddSoulShards(self)
 	if class == 'WARLOCK' then
 		local shards = CreateFrame('StatusBar', nil, self)
 		shards:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -2)
@@ -344,7 +344,7 @@ function oUF_Lure_AddSoulShards(self)
 	end
 end
 
-function oUF_Lure_AddHolyPower(self)
+function oUF_DArc_AddHolyPower(self)
 	if class =='PALADIN' then
 		local holypower = CreateFrame('StatusBar', nil, self)
 		holypower:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -2)
@@ -371,7 +371,7 @@ function oUF_Lure_AddHolyPower(self)
 	end
 end
 
-function oUF_Lure_AddTotems(self)
+function oUF_DArc_AddTotems(self)
 	if class == 'SHAMAN' then
 		local totems = CreateFrame('Frame', nil, self)
 		totems:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -1)
@@ -417,7 +417,7 @@ function oUF_Lure_AddTotems(self)
 	end
 end
 
-function oUF_Lure_AddHealPrediction(self)
+function oUF_DArc_AddHealPrediction(self)
 	local mhpb = CreateFrame('StatusBar', nil, self.Health)
 	mhpb:SetPoint('TOPLEFT', self.Health:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)
 	mhpb:SetPoint('BOTTOMLEFT', self.Health:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
@@ -441,12 +441,12 @@ function oUF_Lure_AddHealPrediction(self)
 	}
 end
 
-function oUF_Lure_AddDebuffHighLight(self)
+function oUF_DArc_AddDebuffHighLight(self)
 	self.DebuffHighlightBackdrop = true
 	self.DebuffHighlightFilter = true
 end
 
-function oUF_Lure_AddAltPowerBar(self)
+function oUF_DArc_AddAltPowerBar(self)
 	self.AltPowerBar = CreateFrame('StatusBar', nil, self)
 	self.AltPowerBar:SetStatusBarTexture(bartexture)
 	
@@ -556,7 +556,7 @@ function ApplyCastbarVisibility(self, var)
 	end
 end
 
-function oUF_Lure_ApplyCastbarOptions()
+function oUF_DArc_ApplyCastbarOptions()
 	ApplyCastbarPositions(oUF_player, oUF_DArc_SavedVars.PlayerCastbarPositionHorizontal, oUF_DArc_SavedVars.PlayerCastbarPositionVertical)
 	ApplyCastbarPositions(oUF_target, oUF_DArc_SavedVars.TargetCastbarPositionHorizontal, oUF_DArc_SavedVars.TargetCastbarPositionVertical)
 	ApplyCastbarPositions(oUF_pet, 0, 40)
@@ -612,7 +612,7 @@ local function ApplyBuffOptions(self, var_buffs, var_debuffs, var_buffside)
 	ApplyDebuffPositions(self, var_buffside)
 end
 
-function oUF_Lure_FixTotDebuffPosition(self)
+function oUF_DArc_FixTotDebuffPosition(self)
 	self.Debuffs.size = 22
 	self.Debuffs:SetHeight(self.Debuffs.size)
 	self.Debuffs:ClearAllPoints()
@@ -634,13 +634,13 @@ function oUF_Lure_FixTotDebuffPosition(self)
 	end
 end
 
-function oUF_Lure_ApplyOptions()
+function oUF_DArc_ApplyOptions()
 	ApplyVisibility()
-	oUF_Lure_ApplyCastbarOptions()
+	oUF_DArc_ApplyCastbarOptions()
 	ApplyBuffOptions(oUF_player, 'ShowBuffsOnPlayer', 'ShowDebuffsOnPlayer', 'PlayerBuffsOnRight')
 	ApplyBuffOptions(oUF_target, 'ShowBuffsOnTarget', 'ShowDebuffsOnTarget', 'TargetBuffsOnRight')
 	ApplyBuffOptions(oUF_pet, 'ShowBuffsOnPet', 'ShowDebuffsOnPet', 'PetBuffsOnRight')
 	ApplyBuffOptions(oUF_focus, 'ShowBuffsOnFocus', 'ShowDebuffsOnFocus', 'FocusBuffsOnRight')
-	oUF_Lure_FixTotDebuffPosition(oUF_targettarget)
+	oUF_DArc_FixTotDebuffPosition(oUF_targettarget)
 end
 

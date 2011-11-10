@@ -1,4 +1,4 @@
-function oUF_Lure_GeneratePanel(parent, name, titletext)
+function oUF_DArc_GeneratePanel(parent, name, titletext)
 	
 	local panel = CreateFrame("Frame", nil, parent)
 	panel.name = name
@@ -14,7 +14,7 @@ function oUF_Lure_GeneratePanel(parent, name, titletext)
 	return panel
 end
 
-function oUF_Lure_GenerateCheckbutton(parent, var, text, x, y)
+function oUF_DArc_GenerateCheckbutton(parent, var, text, x, y)
 	local checkbutton = CreateFrame("CheckButton", nil, parent, "InterfaceOptionsBaseCheckButtonTemplate")
 	checkbutton:SetPoint("TOPLEFT", parent, "TOPLEFT", x, y)
 	checkbutton:SetWidth("25")
@@ -27,9 +27,9 @@ function oUF_Lure_GenerateCheckbutton(parent, var, text, x, y)
 	
 	checkbutton:SetScript("OnClick", 
 		function()
-			oUF_Lure_SavedVars[var] = checkbutton:GetChecked() and true or false
-			oUF_Lure_ApplyOptions()
-			oUF_Lure_ApplyPartyRaidOptions()
+			oUF_DArc_SavedVars[var] = checkbutton:GetChecked() and true or false
+			oUF_DArc_ApplyOptions()
+			oUF_DArc_ApplyPartyRaidOptions()
 		end
 	);
 	
@@ -38,7 +38,7 @@ function oUF_Lure_GenerateCheckbutton(parent, var, text, x, y)
 	return checkbutton
 end
 
-function oUF_Lure_GenerateEditBox(parent, var, text, x, y)
+function oUF_DArc_GenerateEditBox(parent, var, text, x, y)
 	local editbox = CreateFrame("EditBox", var, parent, "InputBoxTemplate")
 	editbox:SetPoint("TOPLEFT", parent, "TOPLEFT", x, y)
 	editbox:SetWidth("50")
@@ -52,9 +52,9 @@ function oUF_Lure_GenerateEditBox(parent, var, text, x, y)
 	
 	editbox:SetScript("OnEnterPressed", 
 		function()
-			oUF_Lure_SavedVars[var] = editbox:GetText() + 0
-			oUF_Lure_ApplyOptions()
-			oUF_Lure_ApplyPartyRaidOptions()
+			oUF_DArc_SavedVars[var] = editbox:GetText() + 0
+			oUF_DArc_ApplyOptions()
+			oUF_DArc_ApplyPartyRaidOptions()
 		end
 	);
 	
@@ -63,7 +63,7 @@ function oUF_Lure_GenerateEditBox(parent, var, text, x, y)
 	return editbox
 end
 
-function oUF_Lure_GenerateSlider(parent, var, text, low, high, step, x, y)
+function oUF_DArc_GenerateSlider(parent, var, text, low, high, step, x, y)
 	local slider = CreateFrame("Slider", var, parent, "OptionsSliderTemplate")
 	slider:SetPoint("TOPLEFT", parent, "TOPLEFT", x, y)
 	slider:SetWidth("160")
@@ -83,9 +83,9 @@ function oUF_Lure_GenerateSlider(parent, var, text, low, high, step, x, y)
 	
 	slider:SetScript("OnMouseUp", 
 	function()
-		oUF_Lure_SavedVars[var] = floor(slider:GetValue()*100 + 0.5)/100
-		oUF_Lure_ApplyOptions()
-		oUF_Lure_ApplyPartyRaidOptions()
+		oUF_DArc_SavedVars[var] = floor(slider:GetValue()*100 + 0.5)/100
+		oUF_DArc_ApplyOptions()
+		oUF_DArc_ApplyPartyRaidOptions()
 	end)
 	
 	slider.var = var
@@ -93,7 +93,7 @@ function oUF_Lure_GenerateSlider(parent, var, text, low, high, step, x, y)
 	return slider
 end
 
-function oUF_Lure_GenerateColorPicker(parent, var, func, text, x, y)
+function oUF_DArc_GenerateColorPicker(parent, var, func, text, x, y)
 
 	local button = CreateFrame("Button", nil, parent)
 	button:SetPoint("TOPLEFT", parent, "TOPLEFT", x, y)
@@ -111,10 +111,10 @@ function oUF_Lure_GenerateColorPicker(parent, var, func, text, x, y)
 	
 	button:SetScript("OnClick", 
 		function()
-			if(oUF_Lure_SavedVars[var] ~= nil) then
-				ColorPickerFrame:SetColorRGB(unpack(oUF_Lure_SavedVars[var]))
+			if(oUF_DArc_SavedVars[var] ~= nil) then
+				ColorPickerFrame:SetColorRGB(unpack(oUF_DArc_SavedVars[var]))
 				ColorPickerFrame.hasOpacity = false
-				ColorPickerFrame.previousValues = oUF_Lure_SavedVars[var]
+				ColorPickerFrame.previousValues = oUF_DArc_SavedVars[var]
 				ColorPickerFrame.func = func
 				ColorPickerFrame.cancelFunc = func
 				ColorPickerFrame:SetFrameStrata("FULLSCREEN_DIALOG")
@@ -126,8 +126,8 @@ function oUF_Lure_GenerateColorPicker(parent, var, func, text, x, y)
 	
 	button:SetScript("OnUpdate", 
 		function()
-			if(oUF_Lure_SavedVars[var] ~= nil) then
-				button.color_sample:SetTexture(unpack(oUF_Lure_SavedVars[var]))
+			if(oUF_DArc_SavedVars[var] ~= nil) then
+				button.color_sample:SetTexture(unpack(oUF_DArc_SavedVars[var]))
 			end
 		end
 	);
