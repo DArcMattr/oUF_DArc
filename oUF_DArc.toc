@@ -8,6 +8,7 @@
 
 options_lib.lua
 options.lua
+tags.lua
 core_lib.lua
 core.lua
 raid.lua
