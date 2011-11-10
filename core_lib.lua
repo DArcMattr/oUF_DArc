@@ -2,6 +2,10 @@ local bartexture = 'Interface\\AddOns\\oUF_DArc\\texture\\plain'
 local bufftexture = 'Interface\\AddOns\\oUF_DArc\\texture\\buff'
 local backdrop = {bgFile = [=[Interface\ChatFrame\ChatFrameBackground]=], insets = {top = -2, left = -2, bottom = -2, right = -2}}
 local font = 'GameFontHighlightSmallLeft'
+
+local width = 300
+local barheight = 18
+
 oUF.colors.power['MANA'] = {26/255, 139/255, 255/255}
 oUF.colors.totems = {
 	[FIRE_TOTEM_SLOT] = { 255/255, 165/255, 0/255 },
@@ -79,7 +83,7 @@ end
 function oUF_DArc_AddHealthBar(self)
 	self.Health = CreateFrame('StatusBar', nil, self)
 	self.Health:SetStatusBarTexture(bartexture)
-	self.Health:SetHeight(18)
+	self.Health:SetHeight(barheight)
 
 	self.Health:SetParent(self)
 	self.Health:SetPoint'TOP'
@@ -120,7 +124,7 @@ end
 function oUF_DArc_AddPowerBar(self)
 	self.Power = CreateFrame('StatusBar', nil, self)
 	self.Power:SetStatusBarTexture(bartexture)
-	self.Power:SetHeight(18)
+	self.Power:SetHeight(barheight)
 	self.Power:SetPoint('TOP', self.Health, 'BOTTOM', 0, -1)
 
 	self.Power:SetParent(self)
@@ -203,7 +207,7 @@ function oUF_DArc_AddCastBar(self, x, y)
 	self.Castbar = CreateFrame('StatusBar', nil, self)
 	self.Castbar:SetBackdrop(backdrop)
 	self.Castbar:SetBackdropColor(0, 0, 0)
-	self.Castbar:SetWidth(300)
+	self.Castbar:SetWidth(width)
 	self.Castbar:SetHeight(17)
 	self.Castbar:SetStatusBarTexture(bartexture)
 	
@@ -233,7 +237,7 @@ function oUF_DArc_AddRunes(self)
 	if class == 'DEATHKNIGHT' then
 		local runes = CreateFrame('Frame', nil, self)
 		runes:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -1)
-		runes:SetSize(300, 5)
+		runes:SetSize(width, 5)
 		runes:SetBackdrop(backdrop)
 		runes:SetBackdropColor(0, 0, 0)
 		
@@ -268,20 +272,20 @@ function oUF_DArc_AddEclipse(self)
 	if class == 'DRUID' then
 		local eclipseBar = CreateFrame('Frame', nil, self)
 		eclipseBar:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -1)
-		eclipseBar:SetSize(300, 5)
+		eclipseBar:SetSize(width, 5)
 		eclipseBar:SetBackdrop(backdrop)
 		eclipseBar:SetBackdropColor(0, 0, 0)
 
 		local lunarBar = CreateFrame('StatusBar', nil, eclipseBar)
 		lunarBar:SetPoint('LEFT', eclipseBar, 'LEFT', 0, 0)
-		lunarBar:SetSize(300, 5)
+		lunarBar:SetSize(width, 5)
 		lunarBar:SetStatusBarTexture(bartexture)
 		lunarBar:SetStatusBarColor(0, 0, 1)
 		eclipseBar.LunarBar = lunarBar
 
 		local solarBar = CreateFrame('StatusBar', nil, eclipseBar)
 		solarBar:SetPoint('LEFT', lunarBar:GetStatusBarTexture(), 'RIGHT', 0, 0)
-		solarBar:SetSize(300, 5)
+		solarBar:SetSize(width, 5)
 		solarBar:SetStatusBarTexture(bartexture)
 		solarBar:SetStatusBarColor(1, 0.8, 0)
 		eclipseBar.SolarBar = solarBar
@@ -294,7 +298,7 @@ function oUF_DArc_AddCombopoints(self)
 	if (class == 'DRUID' or class == 'ROGUE') then
 		local combopoints = CreateFrame('StatusBar', nil, self)
 		combopoints:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -2)
-		combopoints:SetSize(300, 5)
+		combopoints:SetSize(width, 5)
 		combopoints:SetBackdrop(backdrop)
 		combopoints:SetBackdropColor(0, 0, 0)
 
@@ -321,7 +325,7 @@ function oUF_DArc_AddSoulShards(self)
 	if class == 'WARLOCK' then
 		local shards = CreateFrame('StatusBar', nil, self)
 		shards:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -2)
-		shards:SetSize(300, 5)
+		shards:SetSize(width, 5)
 		shards:SetBackdrop(backdrop)
 		shards:SetBackdropColor(0, 0, 0)
 
@@ -348,7 +352,7 @@ function oUF_DArc_AddHolyPower(self)
 	if class =='PALADIN' then
 		local holypower = CreateFrame('StatusBar', nil, self)
 		holypower:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -2)
-		holypower:SetSize(300, 5)
+		holypower:SetSize(width, 5)
 		holypower:SetBackdrop(backdrop)
 		holypower:SetBackdropColor(0, 0, 0)
 
@@ -375,7 +379,7 @@ function oUF_DArc_AddTotems(self)
 	if class == 'SHAMAN' then
 		local totems = CreateFrame('Frame', nil, self)
 		totems:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -1)
-		totems:SetSize(300, 5)
+		totems:SetSize(width, 5)
 		totems:SetBackdrop(backdrop)
 		totems:SetBackdropColor(0, 0, 0)
 		
@@ -540,7 +544,7 @@ local function ApplyCastbarPositions(self, x, y)
 		self.Castbar.Icon.bg:SetAlpha(1)
 	else
 		self.Castbar:SetPoint('LEFT', self, x, y)
-		self.Castbar:SetWidth(300)
+		self.Castbar:SetWidth(width)
 		self.Castbar.Icon:SetAlpha(0)
 		self.Castbar.Icon.bg:SetAlpha(0)
 	end
