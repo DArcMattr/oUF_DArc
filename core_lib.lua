@@ -10,7 +10,7 @@ local frame_height = 55
 -- local frame_width = oUF_DArc_SavedVars.LargeFrameWidth
 local barheight = 18
 
-oUF.colors.power['MANA'] = {26/255, 139/255, 255/255}
+--oUF.colors.power['MANA'] = {26/255, 139/255, 255/255}
 oUF.colors.totems = {
 	[FIRE_TOTEM_SLOT] = { 255/255, 165/255, 0/255 },
 	[EARTH_TOTEM_SLOT] = { 074/255, 142/255, 041/255 },
@@ -101,7 +101,7 @@ function oUF_DArc_AddPortrait(self)
 
   self.Portrait:SetParent(self)
   self.Portrait:SetPoint('TOP')
-  if self.unit == "target" then
+  if self.unit == "target" or self.unit == "targettarget" then
     self.Portrait:SetPoint('RIGHT',1,1)
   else
     self.Portrait:SetPoint('LEFT',1,1)
@@ -120,7 +120,7 @@ function oUF_DArc_AddNameBar(self)
 
 	self.Name:SetParent(self)
 	self.Name:SetPoint('TOP')
-  if self.unit == "target" then
+  if self.unit == "target" or self.unit == "targettarget" then
     self.Name:SetPoint('LEFT')
   else
     self.Name:SetPoint('RIGHT')
@@ -143,7 +143,7 @@ function oUF_DArc_AddHealthBar(self)
 	self.Health:SetPoint('TOP', self.Name, 'BOTTOM', 0, -1)
 
 	self.Health:SetParent(self)
-  if self.unit == "target" then
+  if self.unit == "target" or self.unit == "targettarget" then
     self.Health:SetPoint('LEFT')
   else
     self.Health:SetPoint('LEFT', self.Portrait, 'RIGHT',2,0)
@@ -152,10 +152,9 @@ function oUF_DArc_AddHealthBar(self)
 	self.Health.colorTapping = true
 	self.Health.colorDisconnected = true
 	self.Health.colorSmooth = true
---  self.Health:SetStatusBarColor(0.25, 0.25, 0.25)		
 	self.Health:SetFrameLevel(5)
 
-	local health = self.Health:CreateFontString(nil, 'OVERLAY', font)
+	local health = self.Health:CreateFontString(nil, 'OVERLAY', font, 'OUTLINE')
 	health:SetPoint('CENTER', self.Health)
 	self:Tag(health,'[curhp]/[maxhp]')
 end
@@ -166,19 +165,19 @@ function oUF_DArc_AddLevelBlock(self)
   self.Level:SetHeight(barheight)
   self.Level:SetStatusBarColor(.25,.25,.25)
   self.Level:SetWidth(frame_pct_offset/2)
-  if self.unit == "target" then
+  if self.unit == "target" or self.unit == "targettarget" then
     self.Level:SetPoint('TOPLEFT',self,'TOPRIGHT',5,0)
   else
     self.Level:SetPoint('TOPRIGHT',self,'TOPLEFT',-5,0)
   end
 
-	local unitlevel = self.Level:CreateFontString(nil, 'OVERLAY', font)
+	local unitlevel = self.Level:CreateFontString(nil, 'OVERLAY', font, 'OUTLINE')
 	self:Tag(unitlevel,'[level]')
 	unitlevel:SetPoint('CENTER', self.Level)
 end
 
 function oUF_DArc_AddHealthBarTextPercent(self)
-	local healthpercent = self.Health:CreateFontString(nil, 'OVERLAY', font)
+	local healthpercent = self.Health:CreateFontString(nil, 'OVERLAY', font, 'OUTLINE')
 	healthpercent:SetPoint('RIGHT', self.Health, frame_pct_offset, 0)
 	self:Tag(healthpercent,'[perhp]%')
 end
@@ -208,7 +207,7 @@ function oUF_DArc_AddPowerBar(self)
 	self.Power:SetPoint('TOP', self.Health, 'BOTTOM', 0, -1)
 
 	self.Power:SetParent(self)
-  if self.unit == "target" then
+  if self.unit == "target" or self.unit == "targettarget" then
     self.Power:SetPoint('LEFT')
   else
     self.Power:SetPoint('LEFT', self.Portrait, 'RIGHT',2,0)
@@ -221,19 +220,19 @@ function oUF_DArc_AddPowerBar(self)
 end
 
 function oUF_DArc_AddPowerBarTextPower(self)
-	local power = self.Power:CreateFontString(nil, 'OVERLAY', font)
+	local power = self.Power:CreateFontString(nil, 'OVERLAY', font, 'OUTLINE')
 	power:SetPoint('CENTER', self.Power)
 	self:Tag(power,'[curpp]/[maxpp]')
 end
 
 function oUF_DArc_AddPowerBarTextPercent(self)
-	local powerpercent = self.Health:CreateFontString(nil, 'OVERLAY', font)
+	local powerpercent = self.Health:CreateFontString(nil, 'OVERLAY', font, 'OUTLINE')
 	powerpercent:SetPoint('RIGHT', self.Power, frame_pct_offset, 0)
 	self:Tag(powerpercent,'[perpp]%')
 end
 
 function oUF_DArc_AddPowerBarTextLevel(self)
-	local level = self.Power:CreateFontString(nil, 'OVERLAY', font)
+	local level = self.Power:CreateFontString(nil, 'OVERLAY', font, 'OUTLINE')
 	level:SetPoint('LEFT', self.Power, 2, 0)
 	self:Tag(level,'[level]')
 end
@@ -300,28 +299,30 @@ function oUF_DArc_AddCastBar(self, x, y)
 	self.Castbar:SetPoint'RIGHT'
 	self.Castbar:SetFrameLevel(6)
 	
-	self.Castbar.Text = self.Castbar:CreateFontString(nil, 'OVERLAY', font)
+	self.Castbar.Text = self.Castbar:CreateFontString(nil, 'OVERLAY', font, 'OUTLINE')
 	self.Castbar.Text:SetPoint('LEFT', self.Castbar, 2, 0)
 	self.Castbar.Text:SetTextColor(1, 1, 1)
 
-	self.Castbar.Time = self.Castbar:CreateFontString(nil, 'OVERLAY', font)
+	self.Castbar.Time = self.Castbar:CreateFontString(nil, 'OVERLAY', font, 'OUTLINE')
 	self.Castbar.Time:SetPoint('RIGHT', self.Castbar, -3, 0)
 	self.Castbar.Time:SetTextColor(1, 1, 1)
 	
 	self.Castbar.Icon = self.Castbar:CreateTexture(nil, 'ARTWORK')
   self.Castbar.Icon:SetSize(barheight,barheight)
 	self.Castbar.Icon:SetTexCoord(0, 1, 0, 1)
-  if self.unit == "target" then
-    self.Castbar.Icon:SetPoint('RIGHT', self.Castbar, 'LEFT')
+  if self.unit == "target" or self.unit == "targettarget" then
+    self.Castbar.Icon:SetPoint('RIGHT')
   else
     self.Castbar.Icon:SetPoint('LEFT', self.Castbar, 'RIGHT')
   end
 	
+ --[[ 
 	self.Castbar.Icon.bg = self.Castbar:CreateTexture(nil, 'OVERLAY')
 	self.Castbar.Icon.bg:SetPoint("TOPLEFT", self.Castbar.Icon, "TOPLEFT")
 	self.Castbar.Icon.bg:SetPoint("BOTTOMRIGHT", self.Castbar.Icon, "BOTTOMRIGHT")
 	self.Castbar.Icon.bg:SetTexture(bufftexture)
 	self.Castbar.Icon.bg:SetVertexColor(0.25, 0.25, 0.25)		
+  ]]--
 
   self.Castbar.SafeZone = self.Castbar:CreateTexture(nil, "OVERLAY")
   self.Castbar.SafeZone:SetTexture(1,0,0,.5)
@@ -591,41 +592,41 @@ local function ApplyVisibility()
 	
 	if class == 'DEATHKNIGHT' then
 		if oUF_DArc_SavedVars.ShowRunes then
-			oUF_player.Runes:Show()
+			oUF_player2.Runes:Show()
 		else
-			oUF_player.Runes:Hide()
+			oUF_player2.Runes:Hide()
 		end
 	end 
 	
 	if class == 'DRUID' then
 		if oUF_DArc_SavedVars.ShowEclipse then
-			oUF_player.EclipseBar:SetAlpha(1)
+			oUF_player2.EclipseBar:SetAlpha(1)
 		else
-			oUF_player.EclipseBar:SetAlpha(0)
+			oUF_player2.EclipseBar:SetAlpha(0)
 		end
 	end 
 	
 	if (class == 'DRUID' or class == 'ROGUE') then
 		if oUF_DArc_SavedVars.ShowCombopoints then
-			oUF_target.CPoints:Show()
+			oUF_player2.CPoints:Show()
 		else
-			oUF_target.CPoints:Hide()
+			oUF_player2.CPoints:Hide()
 		end
 	end
 	
 	if class == 'WARLOCK' then
 		if oUF_DArc_SavedVars.ShowSoulShards then
-			oUF_player.SoulShards:Show()
+			oUF_player2.SoulShards:Show()
 		else
-			oUF_player.SoulShards:Hide()
+			oUF_player2.SoulShards:Hide()
 		end
 	end
 	
 	if class == 'PALADIN' then
 		if oUF_DArc_SavedVars.ShowHolyPower then
-			oUF_player.HolyPower:Show()
+			oUF_player2.HolyPower:Show()
 		else
-			oUF_player.HolyPower:Hide()
+			oUF_player2.HolyPower:Hide()
 		end
 	end
 end
