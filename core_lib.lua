@@ -4,7 +4,7 @@ local backdrop = {bgFile = [=[Interface\ChatFrame\ChatFrameBackground]=], insets
 local font = 'GameFontHighlightSmallLeft'
 
 local frame_width = 220
-local frame_height = 55
+local frame_height = 56
 local frame_pct_offset = 30
 -- local frame_width = oUF_DArc_SavedVars.LargeFrameWidth
 local barheight = 18
@@ -94,21 +94,20 @@ end
 
 function oUF_DArc_AddPortrait(self)
   self.Portrait = CreateFrame('PlayerModel', nil, self)
-  self.Portrait:SetWidth(frame_height)
-  self.Portrait:SetHeight(frame_height)
+  self.Portrait:SetWidth(frame_height-1)
+  self.Portrait:SetHeight(frame_height-1)
 	self.Portrait:SetFrameLevel(5)
 
   self.Portrait:SetParent(self)
   self.Portrait:SetPoint('TOP')
   if self.unit == "target" then
-    self.Portrait:SetPoint('RIGHT')
+    self.Portrait:SetPoint('RIGHT',1,1)
   else
-    self.Portrait:SetPoint('LEFT')
+    self.Portrait:SetPoint('LEFT',1,1)
   end
 
   self.Portrait:SetBackdrop(backdrop)
-  self.Portrait:SetBackdropColor(0,0,0,0.8)
-  self.Portrait:SetBackdropBorderColor(0,0,0,1)
+  self.Portrait:SetBackdropColor(1,1,1,0.2)
 end
 
 function oUF_DArc_AddNameBar(self)
@@ -128,14 +127,11 @@ function oUF_DArc_AddNameBar(self)
   end
 	
   self.Name:SetStatusBarColor(UnitSelectionColor(self.unit))
+  --self.Name:SetStatusBarColor(oUF.colors.reactions[UnitReaction(self.unit,"player")])
 
 	local unitname = self.Name:CreateFontString(nil, 'OVERLAY', font, 'OUTLINE')
 	self:Tag(unitname,'[name]')
 	unitname:SetPoint('CENTER', self.Name)
-
-	local level = self.Name:CreateFontString(nil, 'OVERLAY', font)
-	self:Tag(level,'[level]')
-	level:SetPoint('RIGHT', self.Name, -3, 0)
 end
 
 function oUF_DArc_AddHealthBar(self)
@@ -152,10 +148,10 @@ function oUF_DArc_AddHealthBar(self)
     self.Health:SetPoint('LEFT', self.Portrait, 'RIGHT')
   end
 	
-	self.Health.colorSmooth = true
 	self.Health.colorTapping = true
 	self.Health.colorDisconnected = true
-	self.Health.Smooth = true
+	self.Health.colorSmooth = true
+--  self.Health:SetStatusBarColor(0.25, 0.25, 0.25)		
 	self.Health:SetFrameLevel(5)
 
 	local health = self.Health:CreateFontString(nil, 'OVERLAY', font)
@@ -163,16 +159,20 @@ function oUF_DArc_AddHealthBar(self)
 	self:Tag(health,'[curhp]/[maxhp]')
 end
 
-function oUF_DArc_AddHealthBarTextNameLeft(self)
-	local unitnames = self.Health:CreateFontString(nil, 'OVERLAY', font)
-	self:Tag(unitnames,'[name]')
-	unitnames:SetPoint('LEFT', self.Health, 2, 0)
-end
+function oUF_DArc_AddLevelBlock(self)
+	self.Level = CreateFrame('StatusBar', nil, self)
+  self.Level:SetHeight(barheight)
+  self.Level:SetWidth(frame_pct_offset/2)
+	self.Level:SetStatusBarTexture(bartexture)
+  if self.unit == "target" then
+    self.Level:SetPoint('TOPLEFT',self,'TOPRIGHT',5,0)
+  else
+    self.Level:SetPoint('TOPRIGHT',self,'TOPLEFT',-5,0)
+  end
 
-function oUF_DArc_AddHealthBarTextNameCenter(self)
-	local unitnames = self.Health:CreateFontString(nil, 'OVERLAY', font)
-	self:Tag(unitnames,'[name]')
-	unitnames:SetPoint('CENTER', self, 0, 0)
+	local unitlevel = self.Level:CreateFontString(nil, 'OVERLAY', font)
+	self:Tag(unitlevel,'[level]')
+	unitlevel:SetPoint('CENTER', self.Level)
 end
 
 function oUF_DArc_AddHealthBarTextPercent(self)
@@ -320,6 +320,9 @@ function oUF_DArc_AddCastBar(self, x, y)
 	self.Castbar.Icon.bg:SetPoint("BOTTOMRIGHT", self.Castbar.Icon, "BOTTOMRIGHT")
 	self.Castbar.Icon.bg:SetTexture(bufftexture)
 	self.Castbar.Icon.bg:SetVertexColor(0.25, 0.25, 0.25)		
+
+  self.Castbar.SafeZone = self.Castbar:CreateTexture(nil, "OVERLAY")
+  self.Castbar.SafeZone:SetTexture(1,0,0,.5)
 end
 
 function oUF_DArc_AddRunes(self)

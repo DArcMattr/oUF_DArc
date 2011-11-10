@@ -2,7 +2,7 @@
 -- local frame_width_small = oUF_DArc_SavedVars.SmallFrameWidth
 local frame_width = 220
 local frame_width_small = 200
-local frame_height = 55
+local frame_height = 56
 local frame_height_small = 18
 
 local function LayoutPlayer(self, unit)
@@ -11,6 +11,7 @@ local function LayoutPlayer(self, unit)
 	self:SetPoint('CENTER', 0, -440)
 	oUF_DArc_AddPortrait(self)
 	oUF_DArc_AddNameBar(self)
+  oUF_DArc_AddLevelBlock(self)
 	oUF_DArc_AddHealthBar(self)
 	oUF_DArc_AddHealthBarTextPercent(self)
 	oUF_DArc_AddPowerBar(self)
@@ -52,6 +53,7 @@ local function LayoutTarget(self, unit)
 	self:SetPoint('CENTER', 0, -390)
 	oUF_DArc_AddPortrait(self)
 	oUF_DArc_AddNameBar(self)
+  oUF_DArc_AddLevelBlock(self)
 	oUF_DArc_AddHealthBar(self)
 	oUF_DArc_AddHealthBarTextPercent(self)
 	oUF_DArc_AddPowerBar(self)
