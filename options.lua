@@ -196,7 +196,7 @@ end
 
 addon:SetScript("OnEvent", addon.OnEvent)
 
-SlashCmdList["OUFL"] = function() 
+SlashCmdList["OUFD"] = function() 
 	InterfaceOptionsFrame_OpenToCategory("oUF_DArc") 
 end
-SLASH_OUFL1 = "/oufl"
+SLASH_OUFL1 = "/oufd"
