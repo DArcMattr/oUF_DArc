@@ -5,6 +5,7 @@ local font = 'GameFontHighlightSmallLeft'
 
 local frame_width = 220
 local frame_height = 55
+local frame_pct_offset = 30
 -- local frame_width = oUF_DArc_SavedVars.LargeFrameWidth
 local barheight = 18
 
@@ -95,11 +96,15 @@ function oUF_DArc_AddPortrait(self)
   self.Portrait = CreateFrame('PlayerModel', nil, self)
   self.Portrait:SetWidth(frame_height)
   self.Portrait:SetHeight(frame_height)
-	self.Portrait:SetFrameLevel(6)
+	self.Portrait:SetFrameLevel(5)
 
   self.Portrait:SetParent(self)
   self.Portrait:SetPoint('TOP')
-  self.Portrait:SetPoint('LEFT')
+  if self.unit == "target" then
+    self.Portrait:SetPoint('RIGHT')
+  else
+    self.Portrait:SetPoint('LEFT')
+  end
 
   self.Portrait:SetBackdrop(backdrop)
   self.Portrait:SetBackdropColor(0,0,0,0.8)
@@ -115,12 +120,12 @@ function oUF_DArc_AddNameBar(self)
 
 	self.Name:SetParent(self)
 	self.Name:SetPoint('TOP')
---  if self.unit == "target" then
---    self.Name:SetPoint('RIGHT', self.Portrait, 'LEFT')
---    self.Name:SetPoint('LEFT')
---  else
+  if self.unit == "target" then
+    self.Name:SetPoint('RIGHT', self.Portrait, 'LEFT')
+    self.Name:SetPoint('LEFT')
+  else
     self.Name:SetPoint('LEFT', self.Portrait, 'RIGHT')
---  end
+  end
 	
   self.Name:SetStatusBarColor(UnitSelectionColor(self.unit))
 
@@ -137,26 +142,24 @@ function oUF_DArc_AddHealthBar(self)
 	self.Health = CreateFrame('StatusBar', nil, self)
 	self.Health:SetStatusBarTexture(bartexture)
 	self.Health:SetHeight(barheight*3/2)
-	self.Health:SetWidth(frame_width-frame_height-30)
+	self.Health:SetWidth(frame_width-frame_height-frame_pct_offset)
 	self.Health:SetPoint('TOP', self.Name, 'BOTTOM', 0, -1)
 
 	self.Health:SetParent(self)
---  if self.unit == "player" then
+  if self.unit == "target" then
+    self.Health:SetPoint('LEFT')
+  else
     self.Health:SetPoint('LEFT', self.Portrait, 'RIGHT')
---  else
---    self.Health:SetPoint('RIGHT', self.Portrait, 'LEFT')
---  end
+  end
 	
 	self.Health.colorSmooth = true
 	self.Health.colorTapping = true
 	self.Health.colorDisconnected = true
 	self.Health.Smooth = true
 	self.Health:SetFrameLevel(5)
-end
 
-function oUF_DArc_AddHealthBarTextHealth(self)
 	local health = self.Health:CreateFontString(nil, 'OVERLAY', font)
-	health:SetPoint('RIGHT', self.Health, -3, 0)
+	health:SetPoint('CENTER', self.Health)
 	self:Tag(health,'[curhp]/[maxhp]')
 end
 
@@ -174,7 +177,7 @@ end
 
 function oUF_DArc_AddHealthBarTextPercent(self)
 	local healthpercent = self.Health:CreateFontString(nil, 'OVERLAY', font)
-	healthpercent:SetPoint('CENTER', self.Health, 0, 0)
+	healthpercent:SetPoint('RIGHT', self.Health, frame_pct_offset, 0)
 	self:Tag(healthpercent,'[perhp]%')
 end
 
@@ -199,12 +202,12 @@ function oUF_DArc_AddPowerBar(self)
 	self.Power = CreateFrame('StatusBar', nil, self)
 	self.Power:SetStatusBarTexture(bartexture)
 	self.Power:SetHeight(barheight/2)
-	self.Power:SetWidth(frame_width-frame_height-30)
+	self.Power:SetWidth(frame_width-frame_height-frame_pct_offset)
 	self.Power:SetPoint('TOP', self.Health, 'BOTTOM', 0, -1)
 
 	self.Power:SetParent(self)
-  if self.mystyle == "DArcTarget" then
-    self.Power:SetPoint('RIGHT', self.Portrait, 'LEFT')
+  if self.unit == "target" then
+    self.Power:SetPoint('LEFT')
   else
     self.Power:SetPoint('LEFT', self.Portrait, 'RIGHT')
   end
@@ -217,13 +220,13 @@ end
 
 function oUF_DArc_AddPowerBarTextPower(self)
 	local power = self.Power:CreateFontString(nil, 'OVERLAY', font)
-	power:SetPoint('RIGHT', self.Power, -3, 0)
+	power:SetPoint('CENTER', self.Power)
 	self:Tag(power,'[curpp]/[maxpp]')
 end
 
 function oUF_DArc_AddPowerBarTextPercent(self)
 	local powerpercent = self.Health:CreateFontString(nil, 'OVERLAY', font)
-	powerpercent:SetPoint('CENTER', self.Power, 0, 0)
+	powerpercent:SetPoint('RIGHT', self.Power, frame_pct_offset, 0)
 	self:Tag(powerpercent,'[perpp]%')
 end
 
@@ -273,7 +276,7 @@ end
 
 function oUF_DArc_AddRestingIcon(self)
 	self.RestingIcon = self.Health:CreateTexture(nil, 'OVERLAY')
-	self.RestingIcon:SetPoint('CENTER', self.Name, 'LEFT', 9, 0)
+	self.RestingIcon:SetPoint('TOPLEFT', self, 55, 0)
 	self.RestingIcon:SetHeight(18)
 	self.RestingIcon:SetWidth(18)
 	self.RestingIcon:SetTexture('Interface\\CharacterFrame\\UI-StateIcon')
@@ -306,15 +309,17 @@ function oUF_DArc_AddCastBar(self, x, y)
 	self.Castbar.Icon = self.Castbar:CreateTexture(nil, 'ARTWORK')
   self.Castbar.Icon:SetSize(21,21)
 	self.Castbar.Icon:SetTexCoord(0, 1, 0, 1)
-	self.Castbar.Icon:SetPoint('LEFT', self.Castbar, 'RIGHT', 0, 0)
+  if self.unit == "target" then
+    self.Castbar.Icon:SetPoint('RIGHT', self.Castbar, 'LEFT')
+  else
+    self.Castbar.Icon:SetPoint('LEFT', self.Castbar, 'RIGHT')
+  end
 	
 	self.Castbar.Icon.bg = self.Castbar:CreateTexture(nil, 'OVERLAY')
 	self.Castbar.Icon.bg:SetPoint("TOPLEFT", self.Castbar.Icon, "TOPLEFT")
 	self.Castbar.Icon.bg:SetPoint("BOTTOMRIGHT", self.Castbar.Icon, "BOTTOMRIGHT")
 	self.Castbar.Icon.bg:SetTexture(bufftexture)
 	self.Castbar.Icon.bg:SetVertexColor(0.25, 0.25, 0.25)		
-	
-	self.Castbar:SetPoint('CENTER', self, x, y)
 end
 
 function oUF_DArc_AddRunes(self)
