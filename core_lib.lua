@@ -6,6 +6,7 @@ local font = 'GameFontHighlightSmallLeft'
 local frame_width = 220
 local frame_height = 56
 local frame_pct_offset = 28
+local frame_height = 55
 -- local frame_width = oUF_DArc_SavedVars.LargeFrameWidth
 local barheight = 18
 
@@ -131,6 +132,7 @@ function oUF_DArc_AddNameBar(self)
 	local unitname = self.Name:CreateFontString(nil, 'OVERLAY', font, 'OUTLINE')
 	self:Tag(unitname,'[name]')
 	unitname:SetPoint('CENTER', self.Name)
+
 end
 
 function oUF_DArc_AddHealthBar(self)
