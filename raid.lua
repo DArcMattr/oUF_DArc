@@ -169,8 +169,8 @@ function oUF_DArc_SpawnPartyRaid(self)
 		CompactRaidFrameContainer:Hide()
 	end
 
-	oUF:RegisterStyle('LureRaid', LayoutRaid)
-	oUF:SetActiveStyle('LureRaid')
+	oUF:RegisterStyle('DArcRaid', LayoutRaid)
+	oUF:SetActiveStyle('DArcRaid')
 	
 	raid = {}
 	

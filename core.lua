@@ -104,24 +104,24 @@ end
 
 function oUF_DArc_SpawnCore(self)
 
-	oUF:RegisterStyle('LurePlayer', LayoutPlayer)
-	oUF:SetActiveStyle('LurePlayer')
+	oUF:RegisterStyle('DArcPlayer', LayoutPlayer)
+	oUF:SetActiveStyle('DArcPlayer')
 	oUF:Spawn('player', 'oUF_player')
 	
-	oUF:RegisterStyle('LureTarget', LayoutTarget)
-	oUF:SetActiveStyle('LureTarget')
+	oUF:RegisterStyle('DArcTarget', LayoutTarget)
+	oUF:SetActiveStyle('DArcTarget')
 	oUF:Spawn('target', 'oUF_target')
 	
-	oUF:RegisterStyle('LureTot', LayoutTot)
-	oUF:SetActiveStyle('LureTot')
+	oUF:RegisterStyle('DArcTot', LayoutTot)
+	oUF:SetActiveStyle('DArcTot')
 	oUF:Spawn('targettarget', 'oUF_targettarget')
 	
-	oUF:RegisterStyle('LurePet', LayoutPet)
-	oUF:SetActiveStyle('LurePet')
+	oUF:RegisterStyle('DArcPet', LayoutPet)
+	oUF:SetActiveStyle('DArcPet')
 	oUF:Spawn('pet', 'oUF_pet')
 
-	oUF:RegisterStyle('LureFocus', LayoutFocus)
-	oUF:SetActiveStyle('LureFocus')
+	oUF:RegisterStyle('DArcFocus', LayoutFocus)
+	oUF:SetActiveStyle('DArcFocus')
 	oUF:Spawn('focus', 'oUF_focus')
 	
 	oUF_DArc_ApplyOptions()
