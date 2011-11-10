@@ -1,6 +1,6 @@
 -- local frame_width = oUF_DArc_SavedVars.LargeFrameWidth
 -- local frame_width_small = oUF_DArc_SavedVars.SmallFrameWidth
-local frame_width = 300
+local frame_width = 220
 local frame_width_small = 200
 local frame_height = 55
 local frame_height_small = 18
@@ -9,6 +9,7 @@ local function LayoutPlayer(self, unit)
 	oUF_DArc_SetupFrame(self)
 	self:SetSize(frame_width, frame_height)
 	self:SetPoint('CENTER', 0, -440)
+	oUF_DArc_AddPortrait(self)
 	oUF_DArc_AddNameBar(self)
 	oUF_DArc_AddHealthBar(self)
 	oUF_DArc_AddHealthBarTextHealth(self)
@@ -30,10 +31,25 @@ local function LayoutPlayer(self, unit)
 	oUF_DArc_AddRestingIcon(self)
 end
 
+local function LayoutPlayer2(self, unit)
+	oUF_DArc_SetupFrame(self)
+	self:SetSize(frame_width, frame_height)
+	self:SetPoint('CENTER', -200, 0, 'CENTER')
+	oUF_DArc_AddPowerBar(self)
+	oUF_DArc_AddPowerBarTextPower(self)
+	oUF_DArc_AddAltPowerBar(self)
+	oUF_DArc_AddRunes(self)
+	oUF_DArc_AddEclipse(self)
+	oUF_DArc_AddSoulShards(self)
+	oUF_DArc_AddHolyPower(self)
+	oUF_DArc_AddTotems(self)
+end
+
 local function LayoutTarget(self, unit)
 	oUF_DArc_SetupFrame(self)
 	self:SetSize(frame_width, frame_height)
 	self:SetPoint('CENTER', 0, -390)
+	oUF_DArc_AddPortrait(self)
 	oUF_DArc_AddNameBar(self)
 	oUF_DArc_AddHealthBar(self)
 	oUF_DArc_AddHealthBarTextHealth(self)
@@ -107,6 +123,10 @@ function oUF_DArc_SpawnCore(self)
 	oUF:RegisterStyle('DArcPlayer', LayoutPlayer)
 	oUF:SetActiveStyle('DArcPlayer')
 	oUF:Spawn('player', 'oUF_player')
+
+--	oUF:RegisterStyle('DArcPlayer2', LayoutPlayer2)
+--	oUF:SetActiveStyle('DArcPlayer2')
+--	oUF:Spawn('player', 'oUF_player2')
 	
 	oUF:RegisterStyle('DArcTarget', LayoutTarget)
 	oUF:SetActiveStyle('DArcTarget')
