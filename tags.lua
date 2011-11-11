@@ -35,12 +35,12 @@ oUF.Tags['name'] = function(unit)
 		r, g, b = colorB[1], colorB[2], colorB[3]
 	end
     
-    if (unitRealm) and (unitRealm ~= '') then
-        return format('|cff%02x%02x%02x%s|r', r*255, g*255, b*255, unitName)     -- no abbrev
-    else
-        return format('|cff%02x%02x%02x%s|r', r*255, g*255, b*255, string.gsub(unitName, '%s(.[\128-\191]*)%S+%S', ' %1.'))     -- abbrev all words except the first
-    end
-    -- return format('|cff%02x%02x%02x%s|r', r*255, g*255, b*255, string.gsub(unitName, '%s?(.[\128-\191]*)%S+%s', '%1. '))   -- abbrev all words except the last
+  --if (unitRealm) and (unitRealm ~= '') then
+    return format('|cff%02x%02x%02x%s|r', r*255, g*255, b*255, unitName)     -- no abbrev
+  --else
+  --  return format('|cff%02x%02x%02x%s|r', r*255, g*255, b*255, string.gsub(unitName, '%s(.[\128-\191]*)%S+%S', ' %1.'))     -- abbrev all words except the first
+  --end
+  --return format('|cff%02x%02x%02x%s|r', r*255, g*255, b*255, string.gsub(unitName, '%s?(.[\128-\191]*)%S+%s', '%1. '))   -- abbrev all words except the last
 end
 
 oUF.Tags['level'] = function(unit)
