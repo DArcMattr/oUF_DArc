@@ -1,7 +1,8 @@
 local bartexture = [[Interface\AddOns\SharedMedia\statusbar\minimalist.tga]]
-local bufftexture = 'Interface\\AddOns\\oUF_DArc\\texture\\buff'
+local bufftexture = [[Interface\AddOns\oUF_DArc\texture\buff]]
 local backdrop = {bgFile = [=[Interface\ChatFrame\ChatFrameBackground]=], insets = {top = -2, left = -2, bottom = -2, right = -2}}
-local font = 'GameFontHighlightSmallLeft'
+local text_font = 'GameFontHighlightSmallLeft'
+local num_font  = 'NumberFont_OutlineThick_Mono_Small'
 
 local frame_width = 220
 local frame_height = 56
@@ -126,13 +127,13 @@ function oUF_DArc_AddNameBar(self, unit)
     self.Name:SetPoint('RIGHT')
   end
 	
-  self.Name:SetStatusBarColor(UnitSelectionColor(unit))
-  --self.Name:SetStatusBarColor(oUF.colors.reactions[UnitReaction(unit,"player")])
-  if unit == "target" then
-    print(UnitReaction(unit,"player"))
-  end
+  --self.Name:SetStatusBarColor(UnitSelectionColor(self))
+  self.Name:SetStatusBarColor(oUF.colors.reactions[UnitReaction(unit,"player")])
+--  if unit == "target" then
+--    dump( UnitReaction(unit,"player") )
+--  end
 
-	local unitname = self.Name:CreateFontString(nil, 'OVERLAY', font, 'OUTLINE')
+	local unitname = self.Name:CreateFontString(nil, 'OVERLAY', text_font, 'OUTLINE')
 	self:Tag(unitname,'[name]')
 	unitname:SetPoint('CENTER', self.Name)
 end
@@ -160,11 +161,11 @@ function oUF_DArc_AddHealthBar(self, unit)
 	self.Health.colorSmooth = true
 	self.Health:SetFrameLevel(5)
 
-	local health = self.Health:CreateFontString(nil, 'OVERLAY', font, 'OUTLINE')
+	local health = self.Health:CreateFontString(nil, 'OVERLAY', num_font, 'OUTLINE')
 	health:SetPoint('CENTER', self.Health)
 	self:Tag(health,'[curhp]/[maxhp]')
 
-	local healthpercent = self.Health:CreateFontString(nil, 'OVERLAY', font, 'OUTLINE')
+	local healthpercent = self.Health:CreateFontString(nil, 'OVERLAY', num_font, 'OUTLINE')
 	healthpercent:SetPoint('RIGHT', self.Health, frame_pct_offset, 0)
 	self:Tag(healthpercent,'[perhp]%')
 end
@@ -181,7 +182,7 @@ function oUF_DArc_AddLevelBlock(self)
     self.Level:SetPoint('TOPRIGHT',self,'TOPLEFT',-5,0)
   end
 
-	local unitlevel = self.Level:CreateFontString(nil, 'OVERLAY', font, 'OUTLINE')
+	local unitlevel = self.Level:CreateFontString(nil, 'OVERLAY', num_font, 'OUTLINE')
 	self:Tag(unitlevel,'[level]')
 	unitlevel:SetPoint('CENTER', self.Level)
 end
@@ -202,7 +203,7 @@ function oUF_DArc_AddSecondaryPowerBar(self)
 	self.Power:SetFrameLevel(5)
 	self.Power.frequentUpdates = true
 
-	local power = self.Power:CreateFontString(nil, 'OVERLAY', font, 'OUTLINE')
+	local power = self.Power:CreateFontString(nil, 'OVERLAY', num_font, 'OUTLINE')
 	power:SetPoint('CENTER', self.Power)
 	self:Tag(power,'[curpp]/[maxpp]')
 end
@@ -212,11 +213,11 @@ function oUF_DArc_AddPowerBar(self, unit)
 	self.Power:SetStatusBarTexture(bartexture)
   if UnitPowerMax(self.unit) > 0 then
     self.Power:SetHeight(barheight/2)
-    local power = self.Power:CreateFontString(nil, 'OVERLAY', font, 'OUTLINE')
+    local power = self.Power:CreateFontString(nil, 'OVERLAY', num_font, 'OUTLINE')
     power:SetPoint('CENTER', self.Power)
     self:Tag(power,'[curpp]/[maxpp]')
 
-    local powerpercent = self.Power:CreateFontString(nil, 'OVERLAY', font, 'OUTLINE')
+    local powerpercent = self.Power:CreateFontString(nil, 'OVERLAY', num_font, 'OUTLINE')
     powerpercent:SetPoint('RIGHT', self.Power, frame_pct_offset, 0)
     self:Tag(powerpercent,'[perpp]%')
   else
@@ -301,11 +302,11 @@ function oUF_DArc_AddCastBar(self, x, y)
 	self.Castbar:SetPoint'RIGHT'
 	self.Castbar:SetFrameLevel(6)
 	
-	self.Castbar.Text = self.Castbar:CreateFontString(nil, 'OVERLAY', font, 'OUTLINE')
+	self.Castbar.Text = self.Castbar:CreateFontString(nil, 'OVERLAY', text_font, 'OUTLINE')
 	self.Castbar.Text:SetPoint('LEFT', self.Castbar, 2, 0)
 	self.Castbar.Text:SetTextColor(1, 1, 1)
 
-	self.Castbar.Time = self.Castbar:CreateFontString(nil, 'OVERLAY', font, 'OUTLINE')
+	self.Castbar.Time = self.Castbar:CreateFontString(nil, 'OVERLAY', num_font, 'OUTLINE')
 	self.Castbar.Time:SetPoint('RIGHT', self.Castbar, -3, 0)
 	self.Castbar.Time:SetTextColor(1, 1, 1)
 	

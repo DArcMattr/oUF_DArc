@@ -1,6 +1,7 @@
 local bartexture = 'Interface\\AddOns\\oUF_DArc\\texture\\plain'
 local backdrop = {bgFile = [=[Interface\ChatFrame\ChatFrameBackground]=], insets = {top = -2, left = -2, bottom = -2, right = -2}}
-local font = 'GameFontHighlightSmallLeft'
+local text_font = 'GameFontHighlightSmallLeft'
+local num_font  = 'NumberFont_OutlineThick_Mono_Small'
 local raid
 
 local function menu(self)
@@ -56,7 +57,7 @@ local function LayoutRaid(self, unit)
 	self.Health.Smooth = true
 	self.Health:SetFrameLevel(5)
 
-	local name = self.Health:CreateFontString(nil, 'OVERLAY', font)
+	local name = self.Health:CreateFontString(nil, 'OVERLAY', text_font)
 	name:SetPoint('CENTER', self, 'CENTER', 0, 0)
 	self:Tag(name, '[smartname] [leader]')
 	
