@@ -131,11 +131,7 @@ function oUF_DArc_AddHealthBar(self, unit)
   self.Health = CreateFrame('StatusBar', nil, self)
   self.Health:SetStatusBarTexture(bartexture)
   self.Health:SetPoint('TOPRIGHT', self.Namebar, 'BOTTOMRIGHT', -frame_pct_offset, 0 )
-  if ( ( unit ~= "player" ) and ( UnitPowerMax(unit) == 0 ) ) then
-    self.Health:SetHeight( barheight * 2 + 1 )
-  else
-    self.Health:SetHeight( barheight * 3 / 2 )
-  end
+  self.Health:SetHeight( barheight * 3 / 2 )
   self.Health:SetWidth(frame_width-frame_height-frame_pct_offset)
   self.Health:SetPoint('TOP', self.Namebar, 'BOTTOM', 0, -1)
 
@@ -153,6 +149,14 @@ function oUF_DArc_AddHealthBar(self, unit)
   local healthpercent = self.Health:CreateFontString(nil, 'OVERLAY', num_font, 'OUTLINE')
   healthpercent:SetPoint('RIGHT', self.Health, frame_pct_offset, 0)
   self:Tag(healthpercent,'[perhp]%')
+
+  self.Health.PostUpdate = function( self )
+    if ( self.unit ~= nil ) then
+      if ( UnitPowerMax( self.unit ) == 0 ) then
+        self.Health:SetHeight( barheight * 2 + 1 )
+      end
+    end
+  end
 end
 
 function oUF_DArc_AddLevelBlock(self, unit)
@@ -197,29 +201,29 @@ function oUF_DArc_AddPowerBar(self, unit)
   self.Power = CreateFrame('StatusBar', nil, self)
   self.Power:SetStatusBarTexture(bartexture)
   self.Power:SetParent(self)
-  self.Power:SetPoint('BOTTOM')
-
-  if ( UnitPowerMax( unit ) == 0 ) then
-    self.Power:Hide()
-  else
-    self.Power:SetHeight( barheight / 2 )
-    local power = self.Power:CreateFontString(nil, 'OVERLAY', num_font, 'OUTLINE')
-    power:SetPoint('CENTER', self.Power)
-    self:Tag( power, '[curpp]/[maxpp]' )
-
-    local powerpercent = self.Power:CreateFontString(nil, 'OVERLAY', num_font, 'OUTLINE')
-    powerpercent:SetPoint( 'RIGHT', self.Power, frame_pct_offset, 0)
-    self:Tag( powerpercent, '[perpp]%' )
-  end
+  self.Power:SetPoint( 'TOPRIGHT', self.Health, 'BOTTOMRIGHT', 0, -1 )
+  self.Power:SetHeight( barheight / 2 )
   self.Power:SetWidth( frame_width - frame_height - frame_pct_offset )
 
-  self.Power:SetPoint( 'TOPRIGHT', self.Health, 'BOTTOMRIGHT', 0, 0 )
+  local power = self.Power:CreateFontString(nil, 'OVERLAY', num_font, 'OUTLINE')
+  power:SetPoint('CENTER', self.Power)
+  self:Tag( power, '[curpp]/[maxpp]' )
+
+  local powerpercent = self.Power:CreateFontString(nil, 'OVERLAY', num_font, 'OUTLINE')
+  powerpercent:SetPoint( 'RIGHT', self.Power, frame_pct_offset, 0)
+  self:Tag( powerpercent, '[perpp]%' )
 
   self.Power.colorPower = true
   self.Power.Smooth = true
   self.Power:SetFrameLevel(5)
   self.Power.frequentUpdates = true
-
+  self.Power.PostUpdate = function( self )
+    if ( self.unit ) then
+      if ( UnitPowerMax( self.unit ) == 0 ) then
+        self.Power:Hide()
+      end
+    end
+  end
 end
 
 function oUF_DArc_AddRaidIcons(self)
