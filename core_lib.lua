@@ -97,39 +97,30 @@ end
 
 function oUF_DArc_AddPortrait(self)
   self.Portrait = CreateFrame('PlayerModel', nil, self)
-  self.Portrait:SetWidth(frame_height-1)
-  self.Portrait:SetHeight(frame_height-1)
+  self.Portrait:SetWidth( frame_height - 1 )
+  self.Portrait:SetHeight( frame_height - 1 )
   self.Portrait:SetFrameLevel(5)
 
   self.Portrait:SetParent(self)
-  if self.unit == "target" or self.unit == "targettarget" then
-    self.Portrait:SetPoint( 'TOPRIGHT', -1, -1 )
-  else
-    self.Portrait:SetPoint( 'TOPLEFT', -1, -1 )
-  end
+  self.Portrait:SetPoint( 'TOPLEFT', -1, -1 )
 
   self.Portrait:SetBackdrop(backdrop)
-  self.Portrait:SetBackdropColor(1,1,1,0.2)
+  self.Portrait:SetBackdropColor(0,0,0,0.1)
 end
 
 function oUF_DArc_AddNameBar(self, unit)
   self.Namebar = CreateFrame('StatusBar', nil, self)
   self.Namebar:SetStatusBarTexture(bartexture)
   self.Namebar:SetHeight(barheight)
-  self.Namebar:SetWidth(frame_width-frame_height-2)
+  self.Namebar:SetWidth(frame_width-frame_height)
   self.Namebar:SetFrameLevel(5)
 
-  self.Namebar:SetStatusBarColor(0,0,0)
+--  self.Namebar:SetStatusBarColor(0,0,0)
   self.Namebar.colorReaction = true
 
   self.Namebar:SetParent(self)
   self.Namebar:SetPoint('TOP')
-  if self.unit == "target" or self.unit == "targettarget" then
-    self.Namebar:SetPoint('LEFT')
-  else
-    self.Namebar:SetPoint('RIGHT')
-  end
-  
+  self.Namebar:SetPoint('RIGHT')
 
   local unitname = self.Namebar:CreateFontString(nil, 'OVERLAY', text_font, 'OUTLINE')
   self:Tag(unitname,'[DArc:name]')
@@ -139,20 +130,16 @@ end
 function oUF_DArc_AddHealthBar(self, unit)
   self.Health = CreateFrame('StatusBar', nil, self)
   self.Health:SetStatusBarTexture(bartexture)
-  if UnitPowerMax(unit) > 0 then
-    self.Health:SetHeight(barheight*3/2)
+  self.Health:SetPoint('TOPRIGHT', self.Namebar, 'BOTTOMRIGHT', -frame_pct_offset, 0 )
+  if ( ( unit ~= "player" ) and ( UnitPowerMax(unit) == 0 ) ) then
+    self.Health:SetHeight( barheight * 2 + 1 )
   else
-    self.Health:SetHeight(barheight*2 + 1)
+    self.Health:SetHeight( barheight * 3 / 2 )
   end
   self.Health:SetWidth(frame_width-frame_height-frame_pct_offset)
   self.Health:SetPoint('TOP', self.Namebar, 'BOTTOM', 0, -1)
 
   self.Health:SetParent(self)
-  if self.unit == "target" or self.unit == "targettarget" then
-    self.Health:SetPoint('LEFT')
-  else
-    self.Health:SetPoint('LEFT', self.Portrait, 'RIGHT',2,0)
-  end
   
   self.Health.colorTapping = true
   self.Health.colorDisconnected = true
@@ -161,7 +148,7 @@ function oUF_DArc_AddHealthBar(self, unit)
 
   local health = self.Health:CreateFontString(nil, 'OVERLAY', num_font, 'OUTLINE')
   health:SetPoint('CENTER', self.Health)
-  self:Tag(health,'[curhp]/[maxhp]' .. " " ..  UnitPowerMax( "player" .. unit ) .. " " .. unit)
+  self:Tag(health,'[curhp]/[maxhp]' )
 
   local healthpercent = self.Health:CreateFontString(nil, 'OVERLAY', num_font, 'OUTLINE')
   healthpercent:SetPoint('RIGHT', self.Health, frame_pct_offset, 0)
@@ -212,25 +199,21 @@ function oUF_DArc_AddPowerBar(self, unit)
   self.Power:SetParent(self)
   self.Power:SetPoint('BOTTOM')
 
-  if ( UnitPowerMax(unit) ~= 0 ) then
-    self.Power:SetHeight(barheight/2)
+  if ( UnitPowerMax( unit ) == 0 ) then
+    self.Power:Hide()
+  else
+    self.Power:SetHeight( barheight / 2 )
     local power = self.Power:CreateFontString(nil, 'OVERLAY', num_font, 'OUTLINE')
     power:SetPoint('CENTER', self.Power)
-    self:Tag(power,'[curpp]/[maxpp]')
+    self:Tag( power, '[curpp]/[maxpp]' )
 
     local powerpercent = self.Power:CreateFontString(nil, 'OVERLAY', num_font, 'OUTLINE')
-    powerpercent:SetPoint('RIGHT', self.Power, frame_pct_offset, 0)
-    self:Tag(powerpercent,'[perpp]%')
-  else
-    self.Power:Hide()
+    powerpercent:SetPoint( 'RIGHT', self.Power, frame_pct_offset, 0)
+    self:Tag( powerpercent, '[perpp]%' )
   end
-  self.Power:SetWidth(frame_width - frame_height - frame_pct_offset)
+  self.Power:SetWidth( frame_width - frame_height - frame_pct_offset )
 
-  if self.unit == "target" or self.unit == "targettarget" then
-    self.Power:SetPoint('LEFT')
-  else
-    self.Power:SetPoint('LEFT', self.Portrait, 'RIGHT',2,0)
-  end
+  self.Power:SetPoint( 'TOPRIGHT', self.Health, 'BOTTOMRIGHT', 0, 0 )
 
   self.Power.colorPower = true
   self.Power.Smooth = true
