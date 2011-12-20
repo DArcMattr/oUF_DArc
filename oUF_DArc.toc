@@ -2,7 +2,7 @@
 ## Author: DArc, based on lurelure
 ## Title: oUF_DArc
 ## Version: 0.0.1
-## RequiredDeps: oUF
+## RequiredDeps: oUF oUF_Namebar
 ## OptionalDeps: oUF_MovableFrames oUF_DebuffHighlight oUF_Smooth
 ## SavedVariables: oUF_DArc_SavedVars
 

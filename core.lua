@@ -4,7 +4,8 @@ local frame_width = 220
 local frame_width_small = 200
 local frame_height = 56
 local frame_height_small = 18
-local frame_bar_height = 18
+local frame_barheight = 18
+local cp_height = 5
 
 local function LayoutPlayer(self, unit)
 	oUF_DArc_SetupFrame(self)
@@ -27,10 +28,10 @@ end
 
 local function LayoutPlayer2(self, unit)
 	oUF_DArc_SetupFrame(self)
-	self:SetSize(frame_width, frame_bar_height)
-	self:SetPoint('CENTER', -200, 0, 'CENTER')
-	oUF_DArc_AddSecondaryPowerBar(self)
-	oUF_DArc_AddCombopoints(self)
+	self:SetSize(frame_width-frame_height, frame_barheight/2 )
+	self:SetPoint('CENTER', 0, -115, 'CENTER')
+	oUF_DArc_AddSecondaryPowerBar(self, unit)
+	oUF_DArc_AddCombopoints(self, unit)
 	oUF_DArc_AddAltPowerBar(self)
 	oUF_DArc_AddRunes(self)
 	oUF_DArc_AddEclipse(self)
@@ -40,12 +41,12 @@ local function LayoutPlayer2(self, unit)
 end
 
 local function LayoutTarget(self, unit)
-	oUF_DArc_SetupFrame(self)
+  oUF_DArc_SetupFrame(self)
 	self:SetSize(frame_width, frame_height)
 	self:SetPoint('CENTER', 0, -390)
 	oUF_DArc_AddPortrait(self)
 	oUF_DArc_AddNameBar(self, unit)
-  oUF_DArc_AddLevelBlock(self)
+  oUF_DArc_AddLevelBlock(self, unit)
 	oUF_DArc_AddHealthBar(self, unit)
 	oUF_DArc_AddPowerBar(self, unit)
 	oUF_DArc_AddRaidIcons(self)
@@ -61,7 +62,7 @@ local function LayoutTot(self, unit)
 	self:SetSize(frame_width_small, frame_height_small)
 	self:SetPoint('CENTER', 0, -350)
 	oUF_DArc_AddNameBar(self, unit)
-  oUF_DArc_AddLevelBlock(self)
+  oUF_DArc_AddLevelBlock(self, unit)
 	oUF_DArc_AddHealthBar(self, unit)
 	oUF_DArc_AddPowerBar(self, unit)
 	oUF_DArc_AddRaidIcons(self)
