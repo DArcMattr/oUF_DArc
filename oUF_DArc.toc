@@ -3,7 +3,7 @@
 ## Title: oUF_DArc
 ## Version: 0.0.1
 ## RequiredDeps: oUF oUF_Namebar
-## OptionalDeps: oUF_MovableFrames oUF_DebuffHighlight oUF_Smooth
+## OptionalDeps: oUF_MovableFrames oUF_DebuffHighlight oUF_Smooth DamnUnitSounds
 ## SavedVariables: oUF_DArc_SavedVars
 
 options_lib.lua

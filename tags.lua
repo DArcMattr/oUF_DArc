@@ -30,7 +30,7 @@ oUF.Tags['DArc:level'] = function(unit)
 
   if (level < 0) then
     r, g, b = 1, 0, 0
-    level = 'T|Interface\TargetingFrame\UI-TargetingFrame-Skull:0:0:0:0|'
+    level = '|TInterface\\TargetingFrame\\UI-TargetingFrame-Skull:15:15:0:0|t'
   elseif (level == 0) then
     r, g, b = colorL.r, colorL.g, colorL.b
     level = '?'
