@@ -3,6 +3,11 @@ oUF.Tags["DArc:unittype"] = function(unit)
   return UnitReaction(unit, "player")
 end
 
+oUF.TagEvents["smartname"] = "UNIT_HEALTH PLAYER_FLAGS_CHANGED"
+oUF.Tags['smartname'] = function(u) 
+	return not UnitIsConnected(u) and 'Offline' or UnitIsAFK(u) and '<AFK>' or UnitIsGhost(u) and 'Ghost' or UnitIsDead(u) and 'Dead' or UnitName(u):sub(1, oUF_DArc_SavedVars.RaidNameLength) 
+end
+
 -- from oUF_Neav
 oUF.TagEvents['DArc:name'] = 'UNIT_NAME_UPDATE'
 oUF.Tags['DArc:name'] = function(unit)
