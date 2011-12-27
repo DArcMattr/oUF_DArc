@@ -170,7 +170,7 @@ function oUF_DArc_AddHealthPowerBar(self, unit)
   self.Health.PostUpdate = function( self, unit )
     if ( self.unit ~= nil ) then
       if ( UnitPowerMax( self.unit ) == 0 ) then
-        self.Health:SetAllPoints()
+        self.Health:SetHeight( frame_height - barheight - ( 2 * border_width ) )
       end
     end
   end
