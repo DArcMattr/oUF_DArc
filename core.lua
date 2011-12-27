@@ -1,12 +1,13 @@
 -- local frame_width_small = oUF_DArc_SavedVars.SmallFrameWidth
 local frame_width = 240 -- oUF_DArc_SavedVars.Frame_Width
-local frame_height = 75
+local extra_width = 0
+local frame_height = 72
 local frame_barheight = 18
 local cp_height = 5
 
 local function LayoutPlayer(self, unit)
   oUF_DArc_SetupFrame(self)
-  self:SetSize( frame_width, frame_height )
+  self:SetSize( ( frame_width + extra_width ), frame_height )
   self:SetPoint('CENTER', -210, -50, "BOTTOMLEFT")
   oUF_DArc_AddPortrait(self)
   oUF_DArc_AddNameBar(self, unit)
@@ -23,8 +24,8 @@ local function LayoutPlayer(self, unit)
 end
 
 local function LayoutPlayer2(self, unit)
-  oUF_DArc_SetupFrame(self)
-  self:SetSize(frame_width-frame_height, frame_barheight / 2 )
+--  oUF_DArc_SetupFrame(self)
+  self:SetSize(( frame_width + extra_width )-frame_height, frame_barheight / 2 )
   self:SetPoint('CENTER', 0, -115, 'CENTER')
   oUF_DArc_AddSecondaryPowerBar(self, unit)
   oUF_DArc_AddCombopoints(self, unit)
@@ -38,7 +39,7 @@ end
 
 local function LayoutTarget(self, unit)
   oUF_DArc_SetupFrame(self)
-  self:SetSize(frame_width, frame_height)
+  self:SetSize(( frame_width + extra_width ), frame_height)
   self:SetPoint('CENTER', 210, -50, "BOTTOMRIGHT")
   oUF_DArc_AddPortrait(self)
   oUF_DArc_AddNameBar(self, unit)
@@ -54,7 +55,7 @@ end
 
 local function LayoutTot(self, unit)
   oUF_DArc_SetupFrame(self)
-  self:SetSize(frame_width, frame_height)
+  self:SetSize(( frame_width + extra_width ), frame_height)
   self:SetPoint('CENTER', 0, -350)
   oUF_DArc_AddNameBar(self, unit)
   oUF_DArc_AddLevelBlock(self, unit)
@@ -68,7 +69,7 @@ end
 
 local function LayoutPet(self, unit)
   oUF_DArc_SetupFrame(self)
-  self:SetSize(frame_width, frame_height)
+  self:SetSize(( frame_width + extra_width ), frame_height)
   self:SetPoint('CENTER', 310, -440)
   oUF_DArc_AddNameBar(self, unit)
   oUF_DArc_AddHealthPowerBar(self, unit)
@@ -82,7 +83,7 @@ end
 
 local function LayoutFocus(self, unit)
   oUF_DArc_SetupFrame(self)
-  self:SetSize(frame_width, frame_height)
+  self:SetSize(( frame_width + extra_width ), frame_height)
   self:SetPoint('CENTER', -310, -390)
   oUF_DArc_AddNameBar(self, unit)
   oUF_DArc_AddHealthPowerBar(self, unit)
@@ -118,6 +119,9 @@ function oUF_DArc_SpawnCore(self)
   oUF:RegisterStyle('DArcFocus', LayoutFocus)
   oUF:SetActiveStyle('DArcFocus')
   oUF:Spawn('focus', 'oUF_focus')
+  oUF:Spawn('boss1', 'oUF_focus')
+  oUF:Spawn('boss2', 'oUF_focus')
+  oUF:Spawn('boss3', 'oUF_focus')
 
   oUF_DArc_ApplyOptions()
 end
