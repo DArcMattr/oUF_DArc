@@ -136,12 +136,37 @@ local oUF_DArc_Defaults = {
   ["HideBuffsAndDebuffsFromOthers"] = false,
   ["Extra_Width"] = 50,
   ["colors"] = {
-    ["mana"] = {26/255, 139/255, 255/255},
-    ["castbar"] = {0.5, 1, 0.5},
-    ["fire_totem_slot"] = { 255/255, 165/255, 0/255 },
-    ["earth_totem_slot"] = { 074/255, 142/255, 041/255 },
-    ["water_totem_slot"] = { 057/255, 146/255, 181/255 },
-    ["air_totem_slot"] = { 132/255, 056/255, 231/255 },
+    ["MANA"]              = { 104/255, 155/255, 217/255 }, -- {26/255, 139/255, 255/255},
+    ["ENERGY"]            = { 255/255, 255/255, 128/255 },
+    ["RAGE"]              = { 255/255,   0/255,   0/255 },
+    ["FOCUS"]             = { 255/255, 209/255,  71/255 },
+    ["RUNIC_POWER"]       = { 128/255, 128/255, 255/255 },
+    ["class"] = {
+      ["DEATHKNIGHT"]       = { 196/255,  30/255,  60/255 },
+      ["DRUID"]             = { 255/255, 125/255,  10/255 },
+      ["HUNTER"]            = { 171/255, 214/255, 116/255 },
+      ["MAGE"]              = { 104/255, 205/255, 255/255 },
+      ["PALADIN"]           = { 245/255, 140/255, 186/255 },
+      ["PRIEST"]            = { 212/255, 212/255, 212/255 },
+      ["ROGUE"]             = { 255/255, 243/255,  82/255 },
+      ["SHAMAN"]            = {  11/255, 104/255, 255/255 },
+      ["WARLOCK"]           = { 148/255, 130/255, 201/255 },
+      ["WARRIOR"]           = { 199/255, 156/255, 110/255 },
+    ["UnitReactionColor"] = {
+      [1] = { 219/255, 48/255,  41/255 }, -- Hated
+      [2] = { 219/255, 48/255,  41/255 }, -- Hostile
+      [3] = { 219/255, 48/255,  41/255 }, -- Unfriendly
+      [4] = { 218/255, 197/255, 92/255 }, -- Neutral
+      [5] = { 75/255,  175/255, 76/255 }, -- Friendly
+      [6] = { 75/255,  175/255, 76/255 }, -- Honored
+      [7] = { 75/255,  175/255, 76/255 }, -- Revered
+      [8] = { 75/255,  175/255, 76/255 }, -- Exalted
+    },
+    ["castbar"]           = { 128/255, 255/255, 128/255 },
+    ["fire_totem_slot"]   = { 255/255, 165/255,   0/255 },
+    ["earth_totem_slot"]  = { 074/255, 142/255, 041/255 },
+    ["water_totem_slot"]  = { 057/255, 146/255, 181/255 },
+    ["air_totem_slot"]    = { 132/255, 056/255, 231/255 },
   },
 };
 
@@ -176,12 +201,12 @@ local function GetColor(restore)
   local newR, newG, newB, newA
 
   if restore then
-    newR, newG, newB, newA = unpack(restore);
+    newR, newG, newB, newA = unpack(oUF_DArc_SavedVars.colors[restore]);
   else
     newA, newR, newG, newB = OpacitySliderFrame:GetValue(), ColorPickerFrame:GetColorRGB();
   end
 
-  return {newR, newG, newB}
+  return {newR, newG, newB, newA}
 end
 
 function oUF_DArc_SaveColors(restore)
@@ -278,12 +303,15 @@ table.insert(sliders, oUF_DArc_GenerateSlider(panels[#panels], 'RaidFrameWidth',
 table.insert(sliders, oUF_DArc_GenerateSlider(panels[#panels], 'RaidFrameHeight', "Raid frame height", 18, 100, 1, 225, -325))
 
 table.insert(panels, oUF_DArc_GeneratePanel(panels[1], "Colors", "oUF_DArc: Colors"))
-table.insert(colorpickers, oUF_DArc_GenerateColorPicker(panels[#panels], 'castbar',          oUF_DArc_SaveColors, "Castbar color", 20, -50))
-table.insert(colorpickers, oUF_DArc_GenerateColorPicker(panels[#panels], 'mana',             oUF_DArc_SaveColors, "Mana color", 20, -80))
-table.insert(colorpickers, oUF_DArc_GenerateColorPicker(panels[#panels], 'fire_totem_slot',  oUF_DArc_SaveColors, "Fire Totem Color", 20, -110))
-table.insert(colorpickers, oUF_DArc_GenerateColorPicker(panels[#panels], 'earth_totem_slot', oUF_DArc_SaveColors, "Earth Totem Color", 20, -140))
-table.insert(colorpickers, oUF_DArc_GenerateColorPicker(panels[#panels], 'water_totem_slot', oUF_DArc_SaveColors, "Water Totem Color", 20, -170))
-table.insert(colorpickers, oUF_DArc_GenerateColorPicker(panels[#panels], 'air_totem_slot',   oUF_DArc_SaveColors, "Air Totem Color", 20, -200))
+table.insert(colorpickers, oUF_DArc_GenerateColorPicker(panels[#panels], 'castbar',          oUF_DArc_SaveColors, "Castbar color",      20,  -50))
+table.insert(colorpickers, oUF_DArc_GenerateColorPicker(panels[#panels], 'mana',             oUF_DArc_SaveColors, "Mana color",         20,  -80))
+table.insert(colorpickers, oUF_DArc_GenerateColorPicker(panels[#panels], 'energy',           oUF_DArc_SaveColors, "Energy color",      220,  -80))
+table.insert(colorpickers, oUF_DArc_GenerateColorPicker(panels[#panels], 'rage',             oUF_DArc_SaveColors, "Rage color",         20, -110))
+table.insert(colorpickers, oUF_DArc_GenerateColorPicker(panels[#panels], 'runic_power',      oUF_DArc_SaveColors, "Runic Power color", 220, -110))
+table.insert(colorpickers, oUF_DArc_GenerateColorPicker(panels[#panels], 'fire_totem_slot',  oUF_DArc_SaveColors, "Fire Totem Color",   20, -140))
+table.insert(colorpickers, oUF_DArc_GenerateColorPicker(panels[#panels], 'earth_totem_slot', oUF_DArc_SaveColors, "Earth Totem Color", 220, -140))
+table.insert(colorpickers, oUF_DArc_GenerateColorPicker(panels[#panels], 'water_totem_slot', oUF_DArc_SaveColors, "Water Totem Color",  20, -170))
+table.insert(colorpickers, oUF_DArc_GenerateColorPicker(panels[#panels], 'air_totem_slot',   oUF_DArc_SaveColors, "Air Totem Color",   220, -170))
 
 table.insert(panels, oUF_DArc_GeneratePanel(panels[1], "Buffs & Debuffs", "oUF_DArc: Buffs & Debuffs"))
 table.insert(checkbuttons, oUF_DArc_GenerateCheckbutton(panels[#panels], 'HideBuffsAndDebuffsFromOthers', "Hide buffs and debuffs from others", 15, -50))

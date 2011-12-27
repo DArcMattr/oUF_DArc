@@ -25,7 +25,7 @@ numbers_font:SetFont([[Interface\AddOns\SharedMediaAdditionalFonts\fonts\Acciden
 
 local barheight = floor( frame_height * .3 )
 
-oUF.colors.power['MANA'] = {26/255, 139/255, 255/255} -- unpack(oUF_DArc_SavedVars.mana)
+-- oUF.colors.power['MANA'] = {26/255, 139/255, 255/255} -- unpack(oUF_DArc_SavedVars.mana)
 --[[
 oUF.colors.totems = {
   [FIRE_TOTEM_SLOT]  = unpack(oUF_DArc_SavedVars.fire_totem_slot),
