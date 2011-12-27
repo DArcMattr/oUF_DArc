@@ -25,24 +25,6 @@ numbers_font:SetFont([[Interface\AddOns\SharedMediaAdditionalFonts\fonts\Acciden
 
 local barheight = floor( frame_height * .3 )
 
--- oUF.colors.power['MANA'] = {26/255, 139/255, 255/255} -- unpack(oUF_DArc_SavedVars.mana)
---[[
-oUF.colors.totems = {
-  [FIRE_TOTEM_SLOT]  = unpack(oUF_DArc_SavedVars.fire_totem_slot),
-  [EARTH_TOTEM_SLOT] = unpack(oUF_DArc_SavedVars.earth_totem_slot),
-  [WATER_TOTEM_SLOT] = unpack(oUF_DArc_SavedVars.water_totem_slot),
-  [AIR_TOTEM_SLOT]   = unpack(oUF_DArc_SavedVars.air_totem_slot),
-}
---]]
-oUF.colors.reaction = {
-  { 1.0, 0.0, 0.0, 0.5 },
-  { 1.0, 0.0, 0.0, 0.5 },
-  { 1.0, 0.5, 0.0, 0.5 },
-  { 1.0, 1.0, 0.0, 0.5 },
-  { 0.0, 1.0, 0.0, 0.5 },
-  { 0.0, 1.0, 0.0, 0.5 },
-  { 0.0, 1.0, 0.0, 0.5 },
-};
 local _, class = UnitClass( 'player' )
 
 local menu = function(self)
@@ -499,7 +481,7 @@ function oUF_DArc_AddTotems(self)
       local totem = CreateFrame('StatusBar', nil, totems)
       totem:SetSize( cp_width - 2, cp_height * 2 )
       totem:SetStatusBarTexture(bartexture)
-      totem:SetStatusBarColor(unpack(oUF.colors.totems[i]))
+      totem:SetStatusBarColor(unpack(oUF_DArc_SavedVars.colors.totems[i]))
 
       totem.Cooldown = totem
       totem.Cooldown.SetCooldown = function(totem, start, duration)
@@ -522,7 +504,7 @@ function oUF_DArc_AddTotems(self)
 
       local totemBG = totems:CreateTexture(nil, 'BACKGROUND')
       totemBG:SetAllPoints(totem)
-      totemBG:SetTexture(unpack(oUF.colors.totems[i]))
+      totemBG:SetTexture(unpack(oUF_DArc_SavedVars.colors.totems[i]))
       totemBG:SetVertexColor(1/3, 1/3, 1/3)
 
       totems[i] = totem

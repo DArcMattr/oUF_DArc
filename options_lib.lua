@@ -82,7 +82,7 @@ function oUF_DArc_GenerateSlider(parent, var, text, low, high, step, x, y)
     getglobal(slider:GetName() .. 'Text'):SetText(text .. ": " .. floor(slider:GetValue()*100 + 0.5)/100)
   end)
 
-  slider:SetScript("OnMouseWheel", 
+  slider:SetScript("OnMouseWheel",
   function(self, delta)
     local step = self:GetValueStep() * delta
     local value = self:GetValue()
@@ -125,10 +125,10 @@ function oUF_DArc_GenerateColorPicker(parent, var, func, text, x, y)
 
   button:SetScript("OnClick",
     function()
-      if(oUF_DArc_SavedVars.colors[var] ~= nil) then
-        ColorPickerFrame:SetColorRGB(unpack(oUF_DArc_SavedVars.colors[var]))
+      if( var ~= nil ) then
+        ColorPickerFrame:SetColorRGB(unpack(var))
         ColorPickerFrame.hasOpacity = false
-        ColorPickerFrame.previousValues = oUF_DArc_SavedVars.colors[var]
+        ColorPickerFrame.previousValues = var
         ColorPickerFrame.func = func
         ColorPickerFrame.cancelFunc = func
         ColorPickerFrame:SetFrameStrata("FULLSCREEN_DIALOG")
@@ -140,8 +140,8 @@ function oUF_DArc_GenerateColorPicker(parent, var, func, text, x, y)
 
   button:SetScript("OnUpdate",
     function()
-      if(oUF_DArc_SavedVars.colors[var] ~= nil) then
-        button.color_sample:SetTexture(unpack(oUF_DArc_SavedVars.colors[var]))
+      if( var ~= nil ) then
+        button.color_sample:SetTexture(unpack(var))
       end
     end
   );
