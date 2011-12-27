@@ -125,10 +125,10 @@ function oUF_DArc_GenerateColorPicker(parent, var, func, text, x, y)
 
   button:SetScript("OnClick",
     function()
-      if(oUF_DArc_SavedVars[var] ~= nil) then
-        ColorPickerFrame:SetColorRGB(unpack(oUF_DArc_SavedVars[var]))
+      if(oUF_DArc_SavedVars.colors[var] ~= nil) then
+        ColorPickerFrame:SetColorRGB(unpack(oUF_DArc_SavedVars.colors[var]))
         ColorPickerFrame.hasOpacity = false
-        ColorPickerFrame.previousValues = oUF_DArc_SavedVars[var]
+        ColorPickerFrame.previousValues = oUF_DArc_SavedVars.colors[var]
         ColorPickerFrame.func = func
         ColorPickerFrame.cancelFunc = func
         ColorPickerFrame:SetFrameStrata("FULLSCREEN_DIALOG")
@@ -141,7 +141,7 @@ function oUF_DArc_GenerateColorPicker(parent, var, func, text, x, y)
   button:SetScript("OnUpdate",
     function()
       if(oUF_DArc_SavedVars[var] ~= nil) then
-        button.color_sample:SetTexture(unpack(oUF_DArc_SavedVars[var]))
+        button.color_sample:SetTexture(unpack(oUF_DArc_SavedVars.colors[var]))
       end
     end
   );

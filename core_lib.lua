@@ -25,7 +25,7 @@ numbers_font:SetFont([[Interface\AddOns\SharedMediaAdditionalFonts\fonts\Acciden
 
 local barheight = floor( frame_height * .3 )
 
-oUF.colors.power['MANA'] = {26/255, 139/255, 255/255}
+oUF.colors.power['MANA'] = {26/255, 139/255, 255/255} -- unpack(oUF_DArc_SavedVars.mana)
 --[[
 oUF.colors.totems = {
   [FIRE_TOTEM_SLOT]  = unpack(oUF_DArc_SavedVars.fire_totem_slot),
@@ -159,6 +159,12 @@ function oUF_DArc_AddHealthPowerBar(self, unit)
   self.Health.colorSmooth = true
   self.Health:SetFrameLevel(5)
 
+  local HealthBG = self.Health:CreateTexture( nil, 'BACKGROUND' )
+--  HealthBG:SetAllPoints(self.health)
+--  HealthBG:SetTexture( 0, 0, 0, alpha)
+
+  self.Health.bg = HealthBG
+
   local health = self.Health:CreateFontString(nil, 'OVERLAY', 'num_font')
   health:SetPoint('CENTER', self.Health)
   self:Tag(health,'[curhp]/[maxhp]' )
@@ -168,9 +174,11 @@ function oUF_DArc_AddHealthPowerBar(self, unit)
   self:Tag(healthpercent,'[perhp]%')
 
   self.Health.PostUpdate = function( self, unit )
-    if ( self.unit ~= nil ) then
-      if ( UnitPowerMax( self.unit ) == 0 ) then
-        self.Health:SetHeight( frame_height - barheight - ( 2 * border_width ) )
+    if ( unit ~= nil ) then
+      if ( UnitPowerMax( unit ) == 0 ) then
+        self:SetHeight( frame_height - barheight - ( 2 * border_width ) )
+      else
+        self:SetHeight( floor( frame_height * .5 ) - ( 2 * border_width ) )
       end
     end
   end
@@ -187,18 +195,26 @@ function oUF_DArc_AddHealthPowerBar(self, unit)
   self.Power:SetFrameLevel(5)
   self.Power.frequentUpdates = true
 
-  local power = self.Power:CreateFontString( nil, 'OVERLAY', 'num_font' )
-  power:SetPoint( 'CENTER', self.Power )
-  self:Tag( power, '[curpp]/[maxpp]' )
+  local power_txt = self.Power:CreateFontString( nil, 'OVERLAY', 'num_font' )
+  power_txt:SetPoint( 'CENTER', self.Power )
+  self:Tag( power_txt, '[curpp]/[maxpp]' )
+
+  local PowerBG  = self.Power:CreateTexture( nil, 'BACKGROUND' )
+--  PowerBG:SetAllPoints(self.Power)
+--  PowerBG:SetTexture( 0, 0, 0, alpha)
+  
+  self.Power.bg = PowerBG
 
   local powerpercent = self.Power:CreateFontString( nil, 'OVERLAY', 'num_font' )
   powerpercent:SetPoint( 'RIGHT', self.Power, frame_pct_offset, 0)
   self:Tag( powerpercent, '[perpp]%' )
 
   self.Power.PostUpdate = function( self, unit )
-    if ( self.unit ~= nil ) then
-      if ( UnitPowerMax( self.unit ) == 0 ) then
-        self.Power:Hide()
+    if ( unit ~= nil ) then
+      if ( UnitPowerMax( unit ) == 0 ) then
+        self:Hide()
+      else
+        self:Show()
       end
     end
   end
@@ -294,7 +310,7 @@ function oUF_DArc_AddCastBar(self, x, y)
   self.Castbar:SetBackdropColor( 0, 0, 0 )
   self.Castbar:SetHeight( barheight )
   self.Castbar:SetStatusBarTexture( bartexture )
-  self.Castbar:SetStatusBarColor( unpack(oUF_DArc_SavedVars.CastbarColor) )
+  self.Castbar:SetStatusBarColor( unpack(oUF_DArc_SavedVars.colors.castbar) )
 
   self.Castbar:SetParent(self.Namebar)
   self.Castbar:SetAllPoints()
@@ -649,7 +665,7 @@ local function ApplyCastbarPositions(self, x, y)
 end
 
 function ApplyCastbarVisibility(self, var)
-  if oUF_DArc_SavedVars[var] then
+  if oUF_DArc_SavedVars.ShowCastbar[var] then
     self.Castbar:SetAlpha(1)
   else
     self.Castbar:SetAlpha(0)
@@ -657,15 +673,11 @@ function ApplyCastbarVisibility(self, var)
 end
 
 function oUF_DArc_ApplyCastbarOptions()
---  ApplyCastbarPositions(oUF_player, oUF_DArc_SavedVars.PlayerCastbarPositionHorizontal, oUF_DArc_SavedVars.PlayerCastbarPositionVertical)
---  ApplyCastbarPositions(oUF_target, oUF_DArc_SavedVars.TargetCastbarPositionHorizontal, oUF_DArc_SavedVars.TargetCastbarPositionVertical)
---  ApplyCastbarPositions(oUF_pet, 0, 40)
---  ApplyCastbarPositions(oUF_focus, 0, 40)
-  ApplyCastbarVisibility(oUF_player, 'ShowCastbar.player')
-  ApplyCastbarVisibility(oUF_target, 'ShowCastbar.target')
-  ApplyCastbarVisibility(oUF_targettarget, 'ShowCastbar.targettarget')
-  ApplyCastbarVisibility(oUF_pet,    'ShowCastbar.pet')
-  ApplyCastbarVisibility(oUF_focus,  'ShowCastbar.focus')
+  ApplyCastbarVisibility(oUF_player, 'player')
+  ApplyCastbarVisibility(oUF_target, 'target')
+  ApplyCastbarVisibility(oUF_targettarget, 'targettarget')
+  ApplyCastbarVisibility(oUF_pet,    'pet')
+  ApplyCastbarVisibility(oUF_focus,  'focus')
 end
 
 local function ApplyBuffPositions(self, var_buffside)
@@ -698,19 +710,19 @@ local function ApplyDebuffPositions(self, var_buffside)
   self.Debuffs['growth-y'] = 'DOWN'
 end
 
-local function ApplyBuffOptions(self, var_buffs, var_debuffs, var_buffside)
-  if oUF_DArc_SavedVars[var_buffs] then
+local function ApplyBuffOptions(self, unit )
+  if oUF_DArc_SavedVars.ShowBuffsOn[unit] then
     self.Buffs:Show()
   else
     self.Buffs:Hide()
   end
-  if oUF_DArc_SavedVars[var_debuffs] then
+  if oUF_DArc_SavedVars.ShowDebuffsOn[unit] then
     self.Debuffs:Show()
   else
     self.Debuffs:Hide()
   end
-  ApplyBuffPositions(self, var_buffside)
-  ApplyDebuffPositions(self, var_buffside)
+  ApplyBuffPositions(self, oUF_DArc_SavedVars.BuffsOnRight[unit])
+  ApplyDebuffPositions(self, oUF_DArc_SavedVars.BuffsOnRight[unit])
 end
 
 function oUF_DArc_FixTotDebuffPosition(self)
@@ -737,9 +749,9 @@ end
 
 function oUF_DArc_ApplyOptions()
   ApplyVisibility()
-  ApplyBuffOptions(oUF_player, 'ShowBuffsOn.player', 'ShowDebuffsOn.player', 'PlayerBuffsOnRight')
-  ApplyBuffOptions(oUF_target, 'ShowBuffsOn.target', 'ShowDebuffsOn.target', 'TargetBuffsOnRight')
-  ApplyBuffOptions(oUF_pet, 'ShowBuffsOn.pet', 'ShowDebuffsOn.pet', 'PetBuffsOnRight')
-  ApplyBuffOptions(oUF_focus, 'ShowBuffsOn.focus', 'ShowDebuffsOn.focus', 'FocusBuffsOnRight')
+  ApplyBuffOptions(oUF_player, 'player' )
+  ApplyBuffOptions(oUF_target, 'target' )
+  ApplyBuffOptions(oUF_pet, 'pet' )
+  ApplyBuffOptions(oUF_focus, 'focus' )
   oUF_DArc_FixTotDebuffPosition(oUF_targettarget)
 end
