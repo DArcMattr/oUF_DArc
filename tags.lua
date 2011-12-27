@@ -5,7 +5,7 @@ end
 
 oUF.TagEvents["smartname"] = "UNIT_HEALTH PLAYER_FLAGS_CHANGED"
 oUF.Tags['smartname'] = function(u) 
-	return not UnitIsConnected(u) and 'Offline' or UnitIsAFK(u) and '<AFK>' or UnitIsGhost(u) and 'Ghost' or UnitIsDead(u) and 'Dead' or UnitName(u):sub(1, oUF_DArc_SavedVars.RaidNameLength) 
+	return not UnitIsConnected(u) and 'Offline' or UnitIsAFK(u) and '<AFK>' or UnitIsGhost(u) and 'Ghost' or UnitIsDead(u) and 'Dead' or UnitName(u):sub(1, oUF_DArc_SavedVars.RaidNameLength)
 end
 
 -- from oUF_Neav
@@ -35,7 +35,7 @@ oUF.Tags['DArc:level'] = function(unit)
 
   if (level < 0) then
     r, g, b = 1, 0, 0
-    level = '|TInterface\\TargetingFrame\\UI-TargetingFrame-Skull:15:15:0:0|t'
+    level = [[|TInterface\TargetingFrame\UI-TargetingFrame-Skull:16:16:0:0|t]]
   elseif (level == 0) then
     r, g, b = colorL.r, colorL.g, colorL.b
     level = '?'

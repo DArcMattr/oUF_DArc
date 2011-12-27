@@ -1,34 +1,37 @@
+local frame_width = 240 -- oUF_DArc_SavedVars.Frame_Width
+local frame_height = 75 -- oUF_DArc_SavedVars.Frame_Height
+local frame_pct_offset = 30
+local border_width = 3
+local cp_height = 5
+
 local bartexture = [[Interface\AddOns\SharedMedia\statusbar\minimalist.tga]]
 local bufftexture = [[Interface\AddOns\oUF_DArc\texture\buff]]
-local backdrop = {bgFile = [[Interface\ChatFrame\ChatFrameBackground]], insets = {top = -2, left = -2, bottom = -2, right = -2}}
+local backdrop = {bgFile = [[Interface\ChatFrame\ChatFrameBackground]], tile=true, insets = {top = 0, left = 0, bottom = 0, right = 0}}
 local back_edge = {
-  bgFile = [[Interface\FriendsFrame\UI-Toast-Background.blp]], 
-  insets = {top = 5, left = 5, bottom = 5, right = 5}, 
-  tilesize = 12, 
-  edgeFile = [[Interface\FriendsFrame\UI-Toast-Border.blp]], 
-  edgeSize = 12,
+  bgFile = [[Interface\ChatFrame\ChatFrameBackground]],
+  insets = {top = -1 * border_width, left = -1 * border_width, bottom = -1 * border_width, right = -1 * border_width},
+  tilesize = frame_height,
+  edgeFile = [[Interface\AddOns\SharedMedia\border\roth.tga]],
+  edgeSize = border_width,
 }
 
 local plain_text_font = CreateFont('text_font')
-plain_text_font:SetFont([[Interface\AddOns\tekticles\Calibri.ttf]], 13, 'OUTLINE')
+plain_text_font:SetFont([[Interface\AddOns\tekticles\Calibri.ttf]], 12, 'OUTLINE')
 
-local numbers_font = CreateFont('num_font') 
+local numbers_font = CreateFont('num_font')
 numbers_font:SetFont([[Interface\AddOns\SharedMediaAdditionalFonts\fonts\Accidental Presidency.ttf]], 12, 'OUTLINE')
 
-local frame_width = 220
-local frame_pct_offset = 30
-local frame_height = 60
-local cp_height = 5
--- local frame_width = oUF_DArc_SavedVars.LargeFrameWidth
 local barheight = floor( frame_height * .3 )
 
 --oUF.colors.power['MANA'] = {26/255, 139/255, 255/255}
+--[[
 oUF.colors.totems = {
-  [FIRE_TOTEM_SLOT] = { 255/255, 165/255, 0/255 },
-  [EARTH_TOTEM_SLOT] = { 074/255, 142/255, 041/255 },
-  [WATER_TOTEM_SLOT] = { 057/255, 146/255, 181/255 },
-  [AIR_TOTEM_SLOT] = { 132/255, 056/255, 231/255 }
+  [FIRE_TOTEM_SLOT]  = unpack(oUF_DArc_SavedVars.fire_totem_slot),
+  [EARTH_TOTEM_SLOT] = unpack(oUF_DArc_SavedVars.earth_totem_slot),
+  [WATER_TOTEM_SLOT] = unpack(oUF_DArc_SavedVars.water_totem_slot),
+  [AIR_TOTEM_SLOT]   = unpack(oUF_DArc_SavedVars.air_totem_slot),
 }
+--]]
 --[[
 oUF.colors.reactions = {
   { r = 1.0, g = 0.0, b = 0.0 },
@@ -65,7 +68,7 @@ local PostCreateIcon = function(Auras, button)
   button.overlay:SetTexture(bufftexture)
   button.overlay:SetTexCoord(0,1,0,1)
   button.overlay.Hide = function(self) self:SetVertexColor(0.3, 0.3, 0.3) end
-  
+
   button.cd:SetReverse()
   button.cd.noCooldownCount = not oUF_DArc_SavedVars.ShowIconCDCount
 end
@@ -91,44 +94,50 @@ do
 end
 
 function oUF_DArc_SetupFrame(self)
+  local alpha = 0.5
+
   self.menu = menu
   self:RegisterForClicks('AnyDown')
   self:SetScript('OnEnter', UnitFrame_OnEnter)
   self:SetScript('OnLeave', UnitFrame_OnLeave)
   self:SetAttribute('*type2', 'menu')
-  
+
   --[[
-  self:SetBackdrop(backdrop)
-  self:SetBackdropColor(0, 0, 0, 0.8)
-  
+  self:SetBackdrop( backdrop )
+  self:SetBackdropColor(0, 0, 0, alpha)
+
   self.backdrop2 = CreateFrame('StatusBar', nil, self)
-  self.backdrop2:SetStatusBarTexture(bartexture)
-  self.backdrop2:SetStatusBarColor(0, 0, 0, 0.8)
-  self.backdrop2:SetAllPoints(self)
+  self.backdrop2:SetStatusBarTexture( bartexture )
+  self.backdrop2:SetStatusBarColor( 0, 0, 0, alpha )
+  self.backdrop2:SetAllPoints( self )
   self.backdrop2:SetFrameLevel(3)
-  ]]--
+  --]]
 end
 
 function oUF_DArc_AddPortrait(self)
   self.Portrait = CreateFrame('PlayerModel', nil, self)
-  self.Portrait:SetWidth( frame_height - 1 )
-  self.Portrait:SetHeight( frame_height - 1 )
-  self.Portrait:SetFrameLevel(5)
-
   self.Portrait:SetParent(self)
-  self.Portrait:SetPoint( 'TOPLEFT', -1, -1 )
+  self.Portrait:SetPoint( 'TOPLEFT', -1 * border_width, -1 * border_width )
+  self.Portrait:SetWidth( frame_height - ( ( 3 / 2 ) *  border_width ) )
+  self.Portrait:SetHeight( frame_height - ( 2 * border_width ) )
+  self.Portrait:SetFrameLevel(3)
 
-  self.Portrait:SetBackdrop(backdrop)
-  self.Portrait:SetBackdropColor(0,0,0,0.1)
+  --self.Portrait:SetBackdrop(backdrop)
+  self.Portrait:SetBackdrop(back_edge)
+  self.Portrait:SetBackdropColor(0,0,0,0.5)
 end
 
 function oUF_DArc_AddNameBar(self, unit)
   self.Namebar = CreateFrame('StatusBar', nil, self)
-  self.Namebar:SetStatusBarTexture( bartexture )
-  self.Namebar:SetHeight( barheight )
-  self.Namebar:SetWidth( frame_width - frame_height )
+  self.Namebar:SetParent(self)
+  self.Namebar:SetPoint( 'TOPRIGHT', -1 * border_width, -1 * border_width )
+  self.Namebar:SetHeight( barheight - ( 2 * border_width ) )
+  self.Namebar:SetWidth( frame_width - frame_height - ( ( 3 / 2 ) * border_width ) )
   self.Namebar:SetFrameLevel(5)
+
+  self.Namebar:SetStatusBarTexture( bartexture )
   self.Namebar:SetBackdrop( back_edge )
+  self.Namebar:SetBackdropColor( 0, 0, 0, 0.5 )
 
   if ( unit == "target" or unit == "targettarget" and oUF_DArc_SavedVars.ShowReaction ) then
     self.Namebar.colorReaction = true
@@ -136,13 +145,9 @@ function oUF_DArc_AddNameBar(self, unit)
     self.Namebar:SetStatusBarColor(0,0,0)
   end
 
-  self.Namebar:SetParent(self)
-  self.Namebar:SetPoint('TOP')
-  self.Namebar:SetPoint('RIGHT')
-
   local unitname = self.Namebar:CreateFontString(nil, 'OVERLAY', 'text_font')
-  self:Tag(unitname,'[DArc:name]')
-  unitname:SetPoint('CENTER', self.Namebar)
+  self:Tag( unitname, '[DArc:name]' )
+  unitname:SetPoint( 'CENTER', self.Namebar )
 end
 
 function oUF_DArc_AddHealthBar(self, unit)
@@ -154,7 +159,7 @@ function oUF_DArc_AddHealthBar(self, unit)
   self.Health:SetPoint( 'TOP', self.Namebar, 'BOTTOM', 0, -1 )
 
   self.Health:SetParent(self)
-  
+
   self.Health.colorTapping = true
   self.Health.colorDisconnected = true
   self.Health.colorSmooth = true
@@ -221,6 +226,11 @@ function oUF_DArc_AddPowerBar(self, unit)
   self.Power:SetHeight( frame_height * .2 )
   self.Power:SetWidth( frame_width - frame_height - frame_pct_offset )
 
+  self.Power.colorPower = true
+  self.Power.Smooth = true
+  self.Power:SetFrameLevel(5)
+  self.Power.frequentUpdates = true
+  
   local power = self.Power:CreateFontString( nil, 'OVERLAY', 'num_font' )
   power:SetPoint( 'CENTER', self.Power )
   self:Tag( power, '[curpp]/[maxpp]' )
@@ -229,10 +239,6 @@ function oUF_DArc_AddPowerBar(self, unit)
   powerpercent:SetPoint( 'RIGHT', self.Power, frame_pct_offset, 0)
   self:Tag( powerpercent, '[perpp]%' )
 
-  self.Power.colorPower = true
-  self.Power.Smooth = true
-  self.Power:SetFrameLevel(5)
-  self.Power.frequentUpdates = true
   self.Power.PostUpdate = function( self )
     if ( self.unit ) then
       if ( UnitPowerMax( self.unit ) == 0 ) then
@@ -244,10 +250,10 @@ end
 
 function oUF_DArc_AddRaidIcons(self)
   self.RaidIcon = self.Health:CreateTexture(nil, 'OVERLAY')
-  self.RaidIcon:SetHeight(16)
-  self.RaidIcon:SetWidth(16)
+  self.RaidIcon:SetHeight(barheight)
+  self.RaidIcon:SetWidth(barheight)
   self.RaidIcon:SetPoint('TOP', self, 0, 9)
-  self.RaidIcon:SetTexture'Interface\\TargetingFrame\\UI-RaidTargetingIcons'
+  self.RaidIcon:SetTexture([[Interface\TargetingFrame\UI-RaidTargetingIcons]])
 end
 
 function oUF_DArc_AddBuffs(self)
@@ -285,9 +291,9 @@ function oUF_DArc_AddRestingIcon(self)
   self.RestingIcon:SetPoint('TOPRIGHT', self )
   self.RestingIcon:SetHeight(18)
   self.RestingIcon:SetWidth(18)
-  self.RestingIcon:SetTexture('Interface\\CharacterFrame\\UI-StateIcon')
+  self.RestingIcon:SetTexture([[Interface\CharacterFrame\UI-StateIcon]])
   self.RestingIcon:SetTexCoord(0.09, 0.43, 0.08, 0.42)
-  self.Resting = self.RestingIcon 
+  self.Resting = self.RestingIcon
 end
 
 function oUF_DArc_AddCastBar(self, x, y)
@@ -301,7 +307,7 @@ function oUF_DArc_AddCastBar(self, x, y)
   self.Castbar:SetParent(self.Namebar)
   self.Castbar:SetAllPoints()
   self.Castbar:SetFrameLevel(6)
-  
+
   self.Castbar.Text = self.Castbar:CreateFontString(nil, 'OVERLAY', 'text_font')
   self.Castbar.Text:SetPoint('LEFT', self.Castbar, barheight + 2, 0)
   self.Castbar.Text:SetTextColor(1, 1, 1)
@@ -309,17 +315,17 @@ function oUF_DArc_AddCastBar(self, x, y)
   self.Castbar.Time = self.Castbar:CreateFontString(nil, 'OVERLAY', 'num_font')
   self.Castbar.Time:SetPoint('RIGHT', self.Castbar, -3, 0)
   self.Castbar.Time:SetTextColor(1, 1, 1)
-  
+
   self.Castbar.Icon = self.Castbar:CreateTexture(nil, 'OVERLAY')
   self.Castbar.Icon:SetSize( barheight, barheight )
   self.Castbar.Icon:SetTexCoord(0, 1, 0, 1)
   self.Castbar.Icon:SetPoint('LEFT')
-  
+
   self.Castbar.Icon.bg = self.Castbar:CreateTexture(nil, 'OVERLAY')
   self.Castbar.Icon.bg:SetPoint("TOPLEFT", self.Castbar.Icon, "TOPLEFT")
   self.Castbar.Icon.bg:SetPoint("BOTTOMRIGHT", self.Castbar.Icon, "BOTTOMRIGHT")
   self.Castbar.Icon.bg:SetTexture(bufftexture)
-  self.Castbar.Icon.bg:SetVertexColor(0.25, 0.25, 0.25)    
+  self.Castbar.Icon.bg:SetVertexColor(0.25, 0.25, 0.25)
 
   self.Castbar.SafeZone = self.Castbar:CreateTexture(nil, "OVERLAY")
   self.Castbar.SafeZone:SetTexture(1,0,0,.5)
@@ -327,32 +333,33 @@ end
 
 function oUF_DArc_AddRunes(self)
   if class == 'DEATHKNIGHT' then
+    local cp_width = floor( ( frame_width - frame_height ) / 6 )
     local runes = CreateFrame('Frame', nil, self)
     runes:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -1)
-    runes:SetSize( frame_width, cp_height )
+    runes:SetSize( frame_width - frame_height, cp_height )
     runes:SetBackdrop(backdrop)
     runes:SetBackdropColor(0, 0, 0)
-    
+
     for i = 1, 6 do
       local rune = CreateFrame('StatusBar', nil, runes)
       rune:SetStatusBarTexture(bartexture)
 
       if i > 1 then
         if i == 6 then
-          rune:SetSize(49, cp_height )
+          rune:SetSize( cp_width + 1, cp_height )
         else
-          rune:SetSize(48, cp_height )
+          rune:SetSize( cp_width, cp_height )
         end
         rune:SetPoint('LEFT', runes[i - 1], 'RIGHT', 2, 0)
       else
-        rune:SetSize(49, cp_height)
+        rune:SetSize( cp_width + 1, cp_height )
         rune:SetPoint('BOTTOMLEFT', runes, 'BOTTOMLEFT', 0, 0)
       end
 
       local runeBG = rune:CreateTexture(nil, 'BACKGROUND')
       runeBG:SetAllPoints(rune)
       runeBG:SetTexture(1 / 3, 1 / 3, 1 / 3)
-      
+
       rune.bg = runeBG
       runes[i] = rune
     end
@@ -361,7 +368,7 @@ function oUF_DArc_AddRunes(self)
 end
 
 function oUF_DArc_AddEclipse(self)
-  if class == 'DRUID' then
+  if ( class == 'DRUID' and GetPrimaryTalentTree() == 1 ) then
     local eclipseBar = CreateFrame('Frame', nil, self)
     eclipseBar:SetPoint('BOTTOM', self, 'TOP', 1, 1)
     eclipseBar:SetSize(frame_width - frame_height, cp_height)
@@ -381,7 +388,7 @@ function oUF_DArc_AddEclipse(self)
     solarBar:SetStatusBarTexture(bartexture)
     solarBar:SetStatusBarColor(1, 0.8, 0)
     eclipseBar.SolarBar = solarBar
-    
+
     self.EclipseBar = eclipseBar
   end
 end
@@ -389,7 +396,7 @@ end
 function oUF_DArc_AddCombopoints(self, unit)
   if (class == 'DRUID' or class == 'ROGUE') then
     local combopoints = CreateFrame('StatusBar', nil, self)
-    local cp_width = floor( (frame_width - frame_height )/5 )
+    local cp_width = floor( (frame_width - frame_height ) / 5 )
     combopoints:SetPoint('BOTTOM', self, 'TOP', 1, 1)
     combopoints:SetSize(frame_width - frame_height, cp_height)
     combopoints:SetBackdrop(backdrop)
@@ -417,9 +424,9 @@ end
 function oUF_DArc_AddSoulShards(self)
   if class == 'WARLOCK' then
     local shards = CreateFrame('StatusBar', nil, self)
-    local cp_width = floor( (frame_width - frame_height) / 3 )
+    local cp_width = floor( ( frame_width - frame_height ) / 3 )
     shards:SetPoint('BOTTOM', self, 'TOP', 1, 1)
-    shards:SetSize(frame_width, cp_height)
+    shards:SetSize(frame_width - frame_height, cp_height)
     shards:SetBackdrop(backdrop)
     shards:SetBackdropColor(0, 0, 0)
 
@@ -446,9 +453,9 @@ end
 function oUF_DArc_AddHolyPower(self)
   if class =='PALADIN' then
     local holypower = CreateFrame('StatusBar', nil, self)
-    local cp_width = floor( (frame_width - frame_height) / 3 )
+    local cp_width = floor( ( frame_width - frame_height ) / 3 )
     holypower:SetPoint('BOTTOM', self, 'TOP', 1, 1)
-    holypower:SetSize(frame_width, cp_height)
+    holypower:SetSize(frame_width - frame_height, cp_height)
     holypower:SetBackdrop(backdrop)
     holypower:SetBackdropColor(0, 0, 0)
 
@@ -472,44 +479,44 @@ function oUF_DArc_AddHolyPower(self)
 end
 
 function oUF_DArc_AddTotems(self)
-  if class == 'SHAMAN' then
+  if ( class == 'SHAMAN' or class == 'DRUID' ) then
     local totems = CreateFrame('Frame', nil, self)
-    local cp_width = floor( (frame_width - frame_height) / 4 )
-    totems:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -1)
-    totems:SetSize(frame_width, cp_height)
+    local cp_width = floor( ( frame_width - frame_height ) / 4 )
+    totems:SetPoint('BOTTOMLEFT', self, 'TOPLEFT', 0, -1)
+    totems:SetSize( frame_width - frame_height, cp_height * 2 )
     totems:SetBackdrop(backdrop)
-    totems:SetBackdropColor(0, 0, 0)
-    
+    totems:SetBackdropColor(0, 0, 0, .5)
+
     for i = 1, 4 do
       local totem = CreateFrame('StatusBar', nil, totems)
-      totem:SetSize( cp_width, cp_height )
+      totem:SetSize( cp_width - 2, cp_height * 2 )
       totem:SetStatusBarTexture(bartexture)
       totem:SetStatusBarColor(unpack(oUF.colors.totems[i]))
-      
+
       totem.Cooldown = totem
       totem.Cooldown.SetCooldown = function(totem, start, duration)
         totem.start = start
         totem.duration = duration
         totem:SetMinMaxValues(1, duration)
       end
-      
-      totem:SetScript("OnUpdate", 
+
+      totem:SetScript("OnUpdate",
         function()
-          totem:SetValue(totem.start+totem.duration-GetTime())
+          totem:SetValue( totem.start + totem.duration - GetTime() )
         end
       );
-      
+
       if i > 1 then
         totem:SetPoint('LEFT', totems[i - 1], 'RIGHT', 2, 0)
       else
         totem:SetPoint('BOTTOMLEFT', totems, 'BOTTOMLEFT', 0, 0)
       end
-      
+
       local totemBG = totems:CreateTexture(nil, 'BACKGROUND')
       totemBG:SetAllPoints(totem)
       totemBG:SetTexture(unpack(oUF.colors.totems[i]))
       totemBG:SetVertexColor(1/3, 1/3, 1/3)
-      
+
       totems[i] = totem
     end
 
@@ -526,7 +533,7 @@ function oUF_DArc_AddHealPrediction(self)
   mhpb:SetStatusBarTexture(bartexture)
   mhpb:SetStatusBarColor(0, 1, 0.5, 0.25)
   mhpb:SetFrameLevel(4)
-  
+
   local ohpb = CreateFrame('StatusBar', nil, self.Health)
   ohpb:SetPoint('TOPLEFT', mhpb:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)
   ohpb:SetPoint('BOTTOMLEFT', mhpb:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
@@ -534,7 +541,7 @@ function oUF_DArc_AddHealPrediction(self)
   ohpb:SetStatusBarTexture(bartexture)
   ohpb:SetStatusBarColor(0, 1, 0, 0.25)
   ohpb:SetFrameLevel(4)
-  
+
   self.HealPrediction = {
     myBar = mhpb,
     otherBar = ohpb,
@@ -550,7 +557,7 @@ end
 function oUF_DArc_AddAltPowerBar(self)
   self.AltPowerBar = CreateFrame('StatusBar', nil, self)
   self.AltPowerBar:SetStatusBarTexture(bartexture)
-  
+
   self.AltPowerBar:SetHeight(self:GetHeight() + 4)
   self.AltPowerBar:SetWidth(self:GetWidth() + 4)
   self.AltPowerBar:SetPoint('TOP', self, 'TOP', 0, 2)
@@ -568,46 +575,46 @@ local function ApplyFrameVisibility(self, var)
 end
 
 local function ApplyVisibility()
-  
+
   ApplyFrameVisibility(oUF_pet, 'ShowPet')
   ApplyFrameVisibility(oUF_focus, 'ShowFocus')
-  
+
   if oUF_DArc_SavedVars.ShowRestingIcon then
     oUF_player.Resting:SetAlpha(1)
   else
     oUF_player.Resting:SetAlpha(0)
   end
-  
+
   if oUF_DArc_SavedVars.ShowCombatIcon then
     oUF_player.Combat:SetAlpha(1)
   else
     oUF_player.Combat:SetAlpha(0)
   end
-  
+
   if class == 'SHAMAN' then
     if oUF_DArc_SavedVars.ShowTotems then
-      oUF_player.Totems:Show()
+      oUF_player2.Totems:Show()
     else
-      oUF_player.Totems:Hide()
+      oUF_player2.Totems:Hide()
     end
-  end 
-  
+  end
+
   if class == 'DEATHKNIGHT' then
     if oUF_DArc_SavedVars.ShowRunes then
       oUF_player2.Runes:Show()
     else
       oUF_player2.Runes:Hide()
     end
-  end 
-  
+  end
+
   if class == 'DRUID' then
     if oUF_DArc_SavedVars.ShowEclipse then
       oUF_player2.EclipseBar:SetAlpha(1)
     else
       oUF_player2.EclipseBar:SetAlpha(0)
     end
-  end 
-  
+  end
+
   if (class == 'DRUID' or class == 'ROGUE') then
     if oUF_DArc_SavedVars.ShowCombopoints then
       oUF_player2.CPoints:Show()
@@ -615,7 +622,7 @@ local function ApplyVisibility()
       oUF_player2.CPoints:Hide()
     end
   end
-  
+
   if class == 'WARLOCK' then
     if oUF_DArc_SavedVars.ShowSoulShards then
       oUF_player2.SoulShards:Show()
@@ -623,7 +630,7 @@ local function ApplyVisibility()
       oUF_player2.SoulShards:Hide()
     end
   end
-  
+
   if class == 'PALADIN' then
     if oUF_DArc_SavedVars.ShowHolyPower then
       oUF_player2.HolyPower:Show()
@@ -635,7 +642,7 @@ end
 
 local function ApplyCastbarPositions(self, x, y)
   self.Castbar:SetAllPoints()
-  if oUF_DArc_SavedVars.ShowCastbarIcons then
+  if oUF_DArc_SavedVars.ShowCastbarIcon[self.unit] then
 --    self.Castbar:SetPoint('LEFT', self, x+self.Castbar.Icon:GetWidth()-2, y)
     self.Castbar:SetWidth( frame_width )
     self.Castbar.Icon:SetAlpha(1)
@@ -646,7 +653,7 @@ local function ApplyCastbarPositions(self, x, y)
     self.Castbar.Icon:SetAlpha(0)
     self.Castbar.Icon.bg:SetAlpha(0)
   end
-  
+
 end
 
 function ApplyCastbarVisibility(self, var)
@@ -658,14 +665,15 @@ function ApplyCastbarVisibility(self, var)
 end
 
 function oUF_DArc_ApplyCastbarOptions()
-  ApplyCastbarPositions(oUF_player, oUF_DArc_SavedVars.PlayerCastbarPositionHorizontal, oUF_DArc_SavedVars.PlayerCastbarPositionVertical)
-  ApplyCastbarPositions(oUF_target, oUF_DArc_SavedVars.TargetCastbarPositionHorizontal, oUF_DArc_SavedVars.TargetCastbarPositionVertical)
-  ApplyCastbarPositions(oUF_pet, 0, 40)
-  ApplyCastbarPositions(oUF_focus, 0, 40)
-  ApplyCastbarVisibility(oUF_player, 'ShowPlayerCastbar')
-  ApplyCastbarVisibility(oUF_target, 'ShowTargetCastbar')
-  ApplyCastbarVisibility(oUF_pet, 'ShowPetCastbar')
-  ApplyCastbarVisibility(oUF_focus, 'ShowFocusCastbar')
+--  ApplyCastbarPositions(oUF_player, oUF_DArc_SavedVars.PlayerCastbarPositionHorizontal, oUF_DArc_SavedVars.PlayerCastbarPositionVertical)
+--  ApplyCastbarPositions(oUF_target, oUF_DArc_SavedVars.TargetCastbarPositionHorizontal, oUF_DArc_SavedVars.TargetCastbarPositionVertical)
+--  ApplyCastbarPositions(oUF_pet, 0, 40)
+--  ApplyCastbarPositions(oUF_focus, 0, 40)
+  ApplyCastbarVisibility(oUF_player, 'ShowCastbar.player')
+  ApplyCastbarVisibility(oUF_target, 'ShowCastbar.target')
+  ApplyCastbarVisibility(oUF_targettarget, 'ShowCastbar.targettarget')
+  ApplyCastbarVisibility(oUF_pet,    'ShowCastbar.pet')
+  ApplyCastbarVisibility(oUF_focus,  'ShowCastbar.focus')
 end
 
 local function ApplyBuffPositions(self, var_buffside)
@@ -737,11 +745,10 @@ end
 
 function oUF_DArc_ApplyOptions()
   ApplyVisibility()
---  oUF_DArc_ApplyCastbarOptions()
-  ApplyBuffOptions(oUF_player, 'ShowBuffsOnPlayer', 'ShowDebuffsOnPlayer', 'PlayerBuffsOnRight')
-  ApplyBuffOptions(oUF_target, 'ShowBuffsOnTarget', 'ShowDebuffsOnTarget', 'TargetBuffsOnRight')
-  ApplyBuffOptions(oUF_pet, 'ShowBuffsOnPet', 'ShowDebuffsOnPet', 'PetBuffsOnRight')
-  ApplyBuffOptions(oUF_focus, 'ShowBuffsOnFocus', 'ShowDebuffsOnFocus', 'FocusBuffsOnRight')
+  ApplyBuffOptions(oUF_player, 'ShowBuffsOn.player', 'ShowDebuffsOn.player', 'PlayerBuffsOnRight')
+  ApplyBuffOptions(oUF_target, 'ShowBuffsOn.target', 'ShowDebuffsOn.target', 'TargetBuffsOnRight')
+  ApplyBuffOptions(oUF_pet, 'ShowBuffsOn.pet', 'ShowDebuffsOn.pet', 'PetBuffsOnRight')
+  ApplyBuffOptions(oUF_focus, 'ShowBuffsOn.focus', 'ShowDebuffsOn.focus', 'FocusBuffsOnRight')
   oUF_DArc_FixTotDebuffPosition(oUF_targettarget)
 end
 

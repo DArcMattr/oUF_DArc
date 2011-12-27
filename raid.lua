@@ -1,4 +1,4 @@
-local bartexture = 'Interface\\AddOns\\oUF_DArc\\texture\\plain'
+local bartexture = [[Interface\AddOns\SharedMedia\statusbar\minimalist.tga]]
 local backdrop = {bgFile = [=[Interface\ChatFrame\ChatFrameBackground]=], insets = {top = -2, left = -2, bottom = -2, right = -2}}
 
 local plain_text_font = CreateFont('text_font')
