@@ -264,11 +264,11 @@ function oUF_DArc_AddRaidIcons(self)
   self.RaidIcon:SetTexture([[Interface\TargetingFrame\UI-RaidTargetingIcons]])
 end
 
-function oUF_DArc_AddBuffs(self)
+function oUF_DArc_AddBuffs(self, unit)
   self.Buffs = CreateFrame('Frame', nil, self)
-  self.Buffs.size = 21
+  self.Buffs.size = oUF_DArc_SavedVars.BuffSize[unit]
   self.Buffs:SetHeight(self.Buffs.size)
-  self.Buffs.num = 30
+  self.Buffs.num = oUF_DArc_SavedVars.BuffsPerRow 
   self.Buffs.spacing = 0
   self.Buffs.PostCreateIcon = PostCreateIcon
   self.Buffs.PostUpdateIcon = PostUpdateIcon
@@ -575,17 +575,21 @@ function oUF_DArc_AddAltPowerBar(self)
 end
 
 local function ApplyFrameVisibility(self, var)
-  if oUF_DArc_SavedVars[var] then
-    self:Enable()
+  if oUF_DArc_SavedVars.show[var] then
+    if ( self ~= nil ) then
+      self:Enable()
+    end
   else
-    self:Disable()
+    if ( self ~= nil ) then
+      self:Disable()
+    end
   end
 end
 
 local function ApplyVisibility()
 
-  ApplyFrameVisibility(oUF_pet, 'ShowPet')
-  ApplyFrameVisibility(oUF_focus, 'ShowFocus')
+  ApplyFrameVisibility(oUF_pet, 'pet')
+  ApplyFrameVisibility(oUF_focus, 'focus')
 
   if oUF_DArc_SavedVars.ShowRestingIcon then
     oUF_player.Resting:SetAlpha(1)
@@ -672,14 +676,6 @@ function ApplyCastbarVisibility(self, var)
   end
 end
 
-function oUF_DArc_ApplyCastbarOptions()
-  ApplyCastbarVisibility(oUF_player, 'player')
-  ApplyCastbarVisibility(oUF_target, 'target')
-  ApplyCastbarVisibility(oUF_targettarget, 'targettarget')
-  ApplyCastbarVisibility(oUF_pet,    'pet')
-  ApplyCastbarVisibility(oUF_focus,  'focus')
-end
-
 local function ApplyBuffPositions(self, var_buffside)
   self.Buffs:ClearAllPoints()
   if oUF_DArc_SavedVars[var_buffside] then
@@ -711,18 +707,20 @@ local function ApplyDebuffPositions(self, var_buffside)
 end
 
 local function ApplyBuffOptions(self, unit )
-  if oUF_DArc_SavedVars.ShowBuffsOn[unit] then
-    self.Buffs:Show()
-  else
-    self.Buffs:Hide()
+  if ( self ~= nil ) then
+    if oUF_DArc_SavedVars.ShowBuffsOn[unit] then
+      self.Buffs:Show()
+    else
+      self.Buffs:Hide()
+    end
+    if oUF_DArc_SavedVars.ShowDebuffsOn[unit] then
+      self.Debuffs:Show()
+    else
+      self.Debuffs:Hide()
+    end
+    ApplyBuffPositions(self, oUF_DArc_SavedVars.BuffsOnRight[unit])
+    ApplyDebuffPositions(self, oUF_DArc_SavedVars.BuffsOnRight[unit])
   end
-  if oUF_DArc_SavedVars.ShowDebuffsOn[unit] then
-    self.Debuffs:Show()
-  else
-    self.Debuffs:Hide()
-  end
-  ApplyBuffPositions(self, oUF_DArc_SavedVars.BuffsOnRight[unit])
-  ApplyDebuffPositions(self, oUF_DArc_SavedVars.BuffsOnRight[unit])
 end
 
 function oUF_DArc_FixTotDebuffPosition(self)
@@ -751,7 +749,15 @@ function oUF_DArc_ApplyOptions()
   ApplyVisibility()
   ApplyBuffOptions(oUF_player, 'player' )
   ApplyBuffOptions(oUF_target, 'target' )
+  ApplyBuffOptions(oUF_targettarget, 'targettarget' )
   ApplyBuffOptions(oUF_pet, 'pet' )
   ApplyBuffOptions(oUF_focus, 'focus' )
-  oUF_DArc_FixTotDebuffPosition(oUF_targettarget)
+
+  ApplyCastbarVisibility(oUF_player, 'player')
+  ApplyCastbarVisibility(oUF_target, 'target')
+  ApplyCastbarVisibility(oUF_targettarget, 'targettarget')
+  ApplyCastbarVisibility(oUF_pet,    'pet')
+  ApplyCastbarVisibility(oUF_focus,  'focus')
+
+--  oUF_DArc_FixTotDebuffPosition(oUF_targettarget)
 end
