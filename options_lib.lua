@@ -71,6 +71,7 @@ function oUF_DArc_GenerateSlider(parent, var, text, low, high, step, x, y)
 	slider:SetOrientation('HORIZONTAL')
 	slider:SetMinMaxValues(low, high)
 	slider:SetValueStep(step)
+  slider:EnableMouseWheel(true)
 
 	getglobal(slider:GetName() .. 'Low'):SetText(low)
 	getglobal(slider:GetName() .. 'High'):SetText(high)
@@ -80,6 +81,13 @@ function oUF_DArc_GenerateSlider(parent, var, text, low, high, step, x, y)
 	function()
 		getglobal(slider:GetName() .. 'Text'):SetText(text .. ": " .. floor(slider:GetValue()*100 + 0.5)/100)
 	end)
+
+  slider:SetScript("OnMouseWheel", 
+  function()
+		oUF_DArc_SavedVars[var] = floor(slider:GetValue()*100 + 0.5)/100
+		oUF_DArc_ApplyOptions()
+		oUF_DArc_ApplyPartyRaidOptions()
+  end)
 
 	slider:SetScript("OnMouseUp",
 	function()

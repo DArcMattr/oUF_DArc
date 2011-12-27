@@ -118,8 +118,8 @@ function oUF_DArc_AddPortrait(self)
   self.Portrait = CreateFrame('PlayerModel', nil, self)
   self.Portrait:SetParent(self)
   self.Portrait:SetPoint( 'TOPLEFT', -1 * border_width, -1 * border_width )
-  self.Portrait:SetWidth( frame_height - ( ( 3 / 2 ) *  border_width ) )
-  self.Portrait:SetHeight( frame_height - ( 2 * border_width ) )
+  self.Portrait:SetWidth( frame_height - ( 3 / 2 ) *  border_width )
+  self.Portrait:SetHeight( frame_height - border_width )
   self.Portrait:SetFrameLevel(3)
 
   --self.Portrait:SetBackdrop(backdrop)
@@ -130,9 +130,9 @@ end
 function oUF_DArc_AddNameBar(self, unit)
   self.Namebar = CreateFrame('StatusBar', nil, self)
   self.Namebar:SetParent(self)
-  self.Namebar:SetPoint( 'TOPRIGHT', -1 * border_width, -1 * border_width )
+  self.Namebar:SetPoint( 'TOPRIGHT', 0, -1 * border_width )
   self.Namebar:SetHeight( barheight - ( 2 * border_width ) )
-  self.Namebar:SetWidth( frame_width - frame_height - ( ( 3 / 2 ) * border_width ) )
+  self.Namebar:SetWidth( frame_width - frame_height )
   self.Namebar:SetFrameLevel(5)
 
   self.Namebar:SetStatusBarTexture( bartexture )
@@ -150,15 +150,22 @@ function oUF_DArc_AddNameBar(self, unit)
   unitname:SetPoint( 'CENTER', self.Namebar )
 end
 
-function oUF_DArc_AddHealthBar(self, unit)
-  self.Health = CreateFrame('StatusBar', nil, self)
-  self.Health:SetStatusBarTexture( bartexture )
-  self.Health:SetPoint( 'TOPRIGHT', self.Namebar, 'BOTTOMRIGHT', -frame_pct_offset, 0 )
-  self.Health:SetHeight( floor( frame_height * .5 ) )
-  self.Health:SetWidth( frame_width - frame_height - frame_pct_offset )
-  self.Health:SetPoint( 'TOP', self.Namebar, 'BOTTOM', 0, -1 )
+function oUF_DArc_AddHealthPowerBar(self, unit)
+  self.HealthPower = CreateFrame('Frame', nil, self)
+  self.HealthPower:SetParent(self)
+  self.HealthPower:SetHeight( frame_height - barheight - ( 2 * border_width ) )
+  self.HealthPower:SetWidth( frame_width - frame_height )
+  self.HealthPower:SetBackdrop(back_edge)
+  self.HealthPower:SetBackdropColor( 0, 0, 0, 0.5 )
+  --self.HealthPower:SetPoint( 'TOPRIGHT', self.Namebar, 'BOTTOMRIGHT' )
+  self.HealthPower:SetPoint( 'BOTTOMRIGHT' )
 
+  self.Health = CreateFrame('StatusBar', nil, self)
   self.Health:SetParent(self)
+  self.Health:SetStatusBarTexture( bartexture )
+  self.Health:SetPoint( 'TOPLEFT', self.HealthPower )
+  self.Health:SetHeight( floor( frame_height * .5 ) - ( 2 * border_width ) )
+  self.Health:SetWidth( frame_width - frame_height - frame_pct_offset - ( 2 * border_width ) )
 
   self.Health.colorTapping = true
   self.Health.colorDisconnected = true
@@ -177,6 +184,34 @@ function oUF_DArc_AddHealthBar(self, unit)
     if ( self.unit ~= nil ) then
       if ( UnitPowerMax( self.unit ) == 0 ) then
         self.Health:SetHeight( frame_height * .7 )
+      end
+    end
+  end
+
+  self.Power = CreateFrame( 'StatusBar', nil, self )
+  self.Power:SetStatusBarTexture( bartexture )
+  self.Power:SetParent( self )
+  self.Power:SetPoint( 'TOPLEFT', self.Health, 'BOTTOMLEFT' )
+  self.Power:SetHeight( frame_height * .2 )
+  self.Power:SetWidth( frame_width - frame_height - frame_pct_offset - ( 2 * border_width ) )
+
+  self.Power.colorPower = true
+  self.Power.Smooth = true
+  self.Power:SetFrameLevel(5)
+  self.Power.frequentUpdates = true
+  
+  local power = self.Power:CreateFontString( nil, 'OVERLAY', 'num_font' )
+  power:SetPoint( 'CENTER', self.Power )
+  self:Tag( power, '[curpp]/[maxpp]' )
+
+  local powerpercent = self.Power:CreateFontString( nil, 'OVERLAY', 'num_font' )
+  powerpercent:SetPoint( 'RIGHT', self.Power, frame_pct_offset, 0)
+  self:Tag( powerpercent, '[perpp]%' )
+
+  self.Power.PostUpdate = function( self )
+    if ( self.unit ) then
+      if ( UnitPowerMax( self.unit ) == 0 ) then
+        self.Power:Hide()
       end
     end
   end
@@ -216,36 +251,6 @@ function oUF_DArc_AddSecondaryPowerBar(self, unit)
   local power = self.Power:CreateFontString( nil, 'OVERLAY', 'num_font' )
   power:SetPoint( 'CENTER', self.Power )
   self:Tag( power, '[curpp]/[maxpp]' )
-end
-
-function oUF_DArc_AddPowerBar(self, unit)
-  self.Power = CreateFrame( 'StatusBar', nil, self )
-  self.Power:SetStatusBarTexture( bartexture )
-  self.Power:SetParent( self )
-  self.Power:SetPoint( 'TOPRIGHT', self.Health, 'BOTTOMRIGHT', 0, -1 )
-  self.Power:SetHeight( frame_height * .2 )
-  self.Power:SetWidth( frame_width - frame_height - frame_pct_offset )
-
-  self.Power.colorPower = true
-  self.Power.Smooth = true
-  self.Power:SetFrameLevel(5)
-  self.Power.frequentUpdates = true
-  
-  local power = self.Power:CreateFontString( nil, 'OVERLAY', 'num_font' )
-  power:SetPoint( 'CENTER', self.Power )
-  self:Tag( power, '[curpp]/[maxpp]' )
-
-  local powerpercent = self.Power:CreateFontString( nil, 'OVERLAY', 'num_font' )
-  powerpercent:SetPoint( 'RIGHT', self.Power, frame_pct_offset, 0)
-  self:Tag( powerpercent, '[perpp]%' )
-
-  self.Power.PostUpdate = function( self )
-    if ( self.unit ) then
-      if ( UnitPowerMax( self.unit ) == 0 ) then
-        self.Power:Hide()
-      end
-    end
-  end
 end
 
 function oUF_DArc_AddRaidIcons(self)
