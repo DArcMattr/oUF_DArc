@@ -1,5 +1,6 @@
 local bartexture = [[Interface\AddOns\SharedMedia\statusbar\minimalist.tga]]
 local backdrop = {bgFile = [=[Interface\ChatFrame\ChatFrameBackground]=], insets = {top = -2, left = -2, bottom = -2, right = -2}}
+local target_bg = {bgFile = [=[Interface\ChatFrame\ChatFrameBackground]=], insets = {top = -3, left = -3, bottom = -3, right = -3}}
 
 local plain_text_font = CreateFont('text_font')
 plain_text_font:SetFont([[Interface\AddOns\tekticles\Calibri.ttf]], 13, 'OUTLINE')
@@ -69,7 +70,7 @@ local function LayoutRaid(self, unit)
   self.TargetBorder = CreateFrame("Frame", nil, self)
   self.TargetBorder:SetPoint("TOPLEFT", self, "TOPLEFT")
   self.TargetBorder:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT")
-  self.TargetBorder:SetBackdrop({bgFile = [=[Interface\ChatFrame\ChatFrameBackground]=], insets = {top = -3, left = -3, bottom = -3, right = -3}})
+  self.TargetBorder:SetBackdrop(target_bg)
   self.TargetBorder:SetBackdropColor(1, 1, 1)
   self.TargetBorder:SetFrameLevel(0)
   self.TargetBorder:Hide()
@@ -159,12 +160,6 @@ function oUF_DArc_SpawnPartyRaid(self)
       _G[party .. "HealthBar"]:UnregisterAllEvents()
       _G[party .. "ManaBar"]:UnregisterAllEvents()
     end
-  end
-
-  if oUF_DArc_SavedVars.HideBlizzardRaid then
-    CompactRaidFrameContainer:UnregisterAllEvents()
-    CompactRaidFrameContainer.Show = CompactRaidFrameContainer.Hide
-    CompactRaidFrameContainer:Hide()
   end
 
   oUF:RegisterStyle('DArcRaid', LayoutRaid)
