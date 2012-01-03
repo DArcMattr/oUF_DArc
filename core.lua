@@ -1,6 +1,7 @@
 local frame_width = 240
 local extra_width = 0 -- oUF_DArc_SavedVars.Extra_Width
 local frame_height = 72
+local border_width = 3
 local barheight = floor( frame_height * .3 )
 local cp_height = 5
 
@@ -45,7 +46,7 @@ end
 
 local function LayoutPlayer2(self, unit)
 --  oUF_DArc_SetupFrame(self)
-  self:SetSize(( frame_width + extra_width )-frame_height, barheight / 2 )
+  self:SetSize(( frame_width + extra_width ) - frame_height, barheight / 2 )
   self:SetPoint('CENTER', 0, -115, 'CENTER')
   oUF_DArc_AddSecondaryPowerBar(self, unit)
   oUF_DArc_AddCombopoints(self, unit)

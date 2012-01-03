@@ -3,7 +3,6 @@ local addon = CreateFrame("Frame")
 local oUF_DArc_Defaults = {
   ["ShowReaction"] = true,
   ["HideBlizzardParty"] = true,
-  ["NumRaidGroups"] = 8,
   ["ShowCombopoints"] = true,
   ["ShowHolyPower"] = true,
   ["ShowEclipse"] = true,
@@ -165,13 +164,13 @@ local oUF_DArc_Defaults = {
       [7] = { 75/255,  175/255, 76/255 }, -- Revered
       [8] = { 75/255,  175/255, 76/255 }, -- Exalted
     },
-    ["castbar"]           = { 128/255, 255/255, 128/255 },
     ["totems"] = {
       { 255/255, 165/255,   0/255 }, -- fire
       { 074/255, 142/255, 041/255 }, -- earth
       { 057/255, 146/255, 181/255 }, -- water
       { 132/255, 056/255, 231/255 }, -- air
     },
+    ["castbar"]           = { 128/255, 255/255, 128/255 },
   },
 };
 
@@ -205,19 +204,17 @@ end
 local function GetColor(restore)
   local newR, newG, newB, newA
 
---  if restore then
---    newR, newG, newB, newA = unpack(restore);
---  else
---    newA, newR, newG, newB = OpacitySliderFrame:GetValue(), ColorPickerFrame:GetColorRGB();
---  end
+  if restore then
+    newR, newG, newB, newA = unpack(restore);
+  else
+    newA, newR, newG, newB = OpacitySliderFrame:GetValue(), ColorPickerFrame:GetColorRGB();
+  end
 
---  return {newR, newG, newB, newA}
-  return restore
+  return {newR, newG, newB, newA}
 end
 
 function oUF_DArc_SaveColors(var, restore)
---  var = GetColor(restore)
-  return var 
+  var = GetColor(restore)
 end
 
 local panels = {}
@@ -310,26 +307,26 @@ table.insert(sliders, oUF_DArc_GenerateSlider(panels[#panels], 'RaidFrameWidth',
 table.insert(sliders, oUF_DArc_GenerateSlider(panels[#panels], 'RaidFrameHeight', "Raid frame height", 18, 100, 1, 225, -325))
 
 table.insert(panels, oUF_DArc_GeneratePanel(panels[1], "Colors", "oUF_DArc: Colors"))
-table.insert(colorpickers, oUF_DArc_GenerateColorPicker(panels[#panels], 'oUF_DArc_SavedVars.colors["castbar"]',            oUF_DArc_SaveColors, "Castbar color",      20,  -50))
---table.insert(colorpickers, oUF_DArc_GenerateColorPicker(panels[#panels], 'oUF_DArc_SavedVars.colors.power.MANA',         oUF_DArc_SaveColors, "Mana color",         20,  -80))
---table.insert(colorpickers, oUF_DArc_GenerateColorPicker(panels[#panels], 'oUF_DArc_SavedVars.colors.power.ENERGY',       oUF_DArc_SaveColors, "Energy color",      220,  -80))
---table.insert(colorpickers, oUF_DArc_GenerateColorPicker(panels[#panels], 'oUF_DArc_SavedVars.colors.power.RAGE',         oUF_DArc_SaveColors, "Rage color",         20, -110))
---table.insert(colorpickers, oUF_DArc_GenerateColorPicker(panels[#panels], 'oUF_DArc_SavedVars.colors.power.FOCUS',        oUF_DArc_SaveColors, "Focus color",       220, -110))
---table.insert(colorpickers, oUF_DArc_GenerateColorPicker(panels[#panels], 'oUF_DArc_SavedVars.colors.power.RUNIC_POWER',  oUF_DArc_SaveColors, "Runic Power color",  20, -140))
---table.insert(colorpickers, oUF_DArc_GenerateColorPicker(panels[#panels], 'oUF_DArc_SavedVars.colors.totems.fire_slot',   oUF_DArc_SaveColors, "Fire Totem Color",   20, -170))
---table.insert(colorpickers, oUF_DArc_GenerateColorPicker(panels[#panels], 'oUF_DArc_SavedVars.colors.totems.earth_slot',  oUF_DArc_SaveColors, "Earth Totem Color", 220, -170))
---table.insert(colorpickers, oUF_DArc_GenerateColorPicker(panels[#panels], 'oUF_DArc_SavedVars.colors.totems.water_slot',  oUF_DArc_SaveColors, "Water Totem Color",  20, -200))
---table.insert(colorpickers, oUF_DArc_GenerateColorPicker(panels[#panels], 'oUF_DArc_SavedVars.colors.totems.air_slot',    oUF_DArc_SaveColors, "Air Totem Color",   220, -200))
---table.insert(colorpickers, oUF_DArc_GenerateColorPicker(panels[#panels], 'oUF_DArc_SavedVars.colors.class.DEATH_KNIGHT', oUF_DArc_SaveColors, "Death Knight",       20, -230))
---table.insert(colorpickers, oUF_DArc_GenerateColorPicker(panels[#panels], 'oUF_DArc_SavedVars.colors.class.DRUID',        oUF_DArc_SaveColors, "Druid",             220, -230))
---table.insert(colorpickers, oUF_DArc_GenerateColorPicker(panels[#panels], 'oUF_DArc_SavedVars.colors.class.HUNTER',       oUF_DArc_SaveColors, "Hunter",             20, -260))
---table.insert(colorpickers, oUF_DArc_GenerateColorPicker(panels[#panels], 'oUF_DArc_SavedVars.colors.class.MAGE',         oUF_DArc_SaveColors, "Mage",              220, -260))
---table.insert(colorpickers, oUF_DArc_GenerateColorPicker(panels[#panels], 'oUF_DArc_SavedVars.colors.class.PALADIN',      oUF_DArc_SaveColors, "Paladin",            20, -290))
---table.insert(colorpickers, oUF_DArc_GenerateColorPicker(panels[#panels], 'oUF_DArc_SavedVars.colors.class.PRIEST',       oUF_DArc_SaveColors, "Priest",            220, -290))
---table.insert(colorpickers, oUF_DArc_GenerateColorPicker(panels[#panels], 'oUF_DArc_SavedVars.colors.class.ROGUE',        oUF_DArc_SaveColors, "Rogue",              20, -320))
---table.insert(colorpickers, oUF_DArc_GenerateColorPicker(panels[#panels], 'oUF_DArc_SavedVars.colors.class.SHAMAN',       oUF_DArc_SaveColors, "Shaman",            220, -320))
---table.insert(colorpickers, oUF_DArc_GenerateColorPicker(panels[#panels], 'oUF_DArc_SavedVars.colors.class.WARLOCK',      oUF_DArc_SaveColors, "Warlock",            20, -350))
---table.insert(colorpickers, oUF_DArc_GenerateColorPicker(panels[#panels], 'oUF_DArc_SavedVars.colors.class.WARRIOR',      oUF_DArc_SaveColors, "Warrior",           220, -350))
+table.insert(colorpickers, oUF_DArc_GenerateColorPicker( panels[#panels], "oUF_DArc_SavedVars.colors['castbar']",            oUF_DArc_SaveColors, "Castbar color",      20,  -50))
+--table.insert(colorpickers, oUF_DArc_GenerateColorPicker( panels[#panels], oUF_DArc_SavedVars.colors.power.MANA,         oUF_DArc_SaveColors, "Mana color",         20,  -80))
+--table.insert(colorpickers, oUF_DArc_GenerateColorPicker( panels[#panels], oUF_DArc_SavedVars.colors.power.ENERGY,       oUF_DArc_SaveColors, "Energy color",      220,  -80))
+--table.insert(colorpickers, oUF_DArc_GenerateColorPicker( panels[#panels], oUF_DArc_SavedVars.colors.power.RAGE,         oUF_DArc_SaveColors, "Rage color",         20, -110))
+--table.insert(colorpickers, oUF_DArc_GenerateColorPicker( panels[#panels], oUF_DArc_SavedVars.colors.power.FOCUS,        oUF_DArc_SaveColors, "Focus color",       220, -110))
+--table.insert(colorpickers, oUF_DArc_GenerateColorPicker( panels[#panels], oUF_DArc_SavedVars.colors.power.RUNIC_POWER,  oUF_DArc_SaveColors, "Runic Power color",  20, -140))
+--table.insert(colorpickers, oUF_DArc_GenerateColorPicker( panels[#panels], oUF_DArc_SavedVars.colors.totems[1],          oUF_DArc_SaveColors, "Fire Totem Color",   20, -170))
+--table.insert(colorpickers, oUF_DArc_GenerateColorPicker( panels[#panels], oUF_DArc_SavedVars.colors.totems[2],          oUF_DArc_SaveColors, "Earth Totem Color", 220, -170))
+--table.insert(colorpickers, oUF_DArc_GenerateColorPicker( panels[#panels], oUF_DArc_SavedVars.colors.totems[3],          oUF_DArc_SaveColors, "Water Totem Color",  20, -200))
+--table.insert(colorpickers, oUF_DArc_GenerateColorPicker( panels[#panels], oUF_DArc_SavedVars.colors.totems[4],          oUF_DArc_SaveColors, "Air Totem Color",   220, -200))
+--table.insert(colorpickers, oUF_DArc_GenerateColorPicker( panels[#panels], oUF_DArc_SavedVars.colors.class.DEATH_KNIGHT, oUF_DArc_SaveColors, "Death Knight",       20, -230))
+--table.insert(colorpickers, oUF_DArc_GenerateColorPicker( panels[#panels], oUF_DArc_SavedVars.colors.class.DRUID,        oUF_DArc_SaveColors, "Druid",             220, -230))
+--table.insert(colorpickers, oUF_DArc_GenerateColorPicker( panels[#panels], oUF_DArc_SavedVars.colors.class.HUNTER,       oUF_DArc_SaveColors, "Hunter",             20, -260))
+--table.insert(colorpickers, oUF_DArc_GenerateColorPicker( panels[#panels], oUF_DArc_SavedVars.colors.class.MAGE,         oUF_DArc_SaveColors, "Mage",              220, -260))
+--table.insert(colorpickers, oUF_DArc_GenerateColorPicker( panels[#panels], oUF_DArc_SavedVars.colors.class.PALADIN,      oUF_DArc_SaveColors, "Paladin",            20, -290))
+--table.insert(colorpickers, oUF_DArc_GenerateColorPicker( panels[#panels], oUF_DArc_SavedVars.colors.class.PRIEST,       oUF_DArc_SaveColors, "Priest",            220, -290))
+--table.insert(colorpickers, oUF_DArc_GenerateColorPicker( panels[#panels], oUF_DArc_SavedVars.colors.class.ROGUE,        oUF_DArc_SaveColors, "Rogue",              20, -320))
+--table.insert(colorpickers, oUF_DArc_GenerateColorPicker( panels[#panels], oUF_DArc_SavedVars.colors.class.SHAMAN,       oUF_DArc_SaveColors, "Shaman",            220, -320))
+--table.insert(colorpickers, oUF_DArc_GenerateColorPicker( panels[#panels], oUF_DArc_SavedVars.colors.class.WARLOCK,      oUF_DArc_SaveColors, "Warlock",            20, -350))
+--table.insert(colorpickers, oUF_DArc_GenerateColorPicker( panels[#panels], oUF_DArc_SavedVars.colors.class.WARRIOR,      oUF_DArc_SaveColors, "Warrior",           220, -350))
 
 table.insert(panels, oUF_DArc_GeneratePanel(panels[1], "Buffs & Debuffs", "oUF_DArc: Buffs & Debuffs"))
 table.insert(checkbuttons, oUF_DArc_GenerateCheckbutton(panels[#panels], 'HideBuffsAndDebuffsFromOthers', "Hide buffs and debuffs from others", 15, -50))

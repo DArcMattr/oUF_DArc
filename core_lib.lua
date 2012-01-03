@@ -1,5 +1,5 @@
-local frame_width = 240 -- oUF_DArc_SavedVars.Frame_Width
-local frame_height = 72 -- oUF_DArc_SavedVars.Frame_Height
+local frame_width = 240
+local frame_height = 72
 local frame_pct_offset = 25
 local extra_width = 0
 local border_width = 3
@@ -88,7 +88,6 @@ function oUF_DArc_AddPortrait(self)
   self.Portrait:SetHeight( frame_height - border_width )
   self.Portrait:SetFrameLevel(3)
 
-  --self.Portrait:SetBackdrop(backdrop)
   self.Portrait:SetBackdrop(back_edge)
   self.Portrait:SetBackdropColor( 0, 0, 0, alpha )
 end
@@ -140,7 +139,7 @@ function oUF_DArc_AddHealthPowerBar(self, unit)
 
   local HealthBG = self.Health:CreateTexture( nil, 'BACKGROUND' )
   HealthBG:SetAllPoints(self.Health)
-  HealthBG:SetTexture( 0, 0, 0, alpha)
+  HealthBG:SetTexture( 0, 0, 0, .25 )
 
   self.Health.bg = HealthBG
 
@@ -180,7 +179,7 @@ function oUF_DArc_AddHealthPowerBar(self, unit)
 
   local PowerBG  = self.Power:CreateTexture( nil, 'BACKGROUND' )
   PowerBG:SetAllPoints(self.Power)
-  PowerBG:SetTexture( 0, 0, 0, alpha)
+  PowerBG:SetTexture( 0, 0, 0, .25 )
   
   self.Power.bg = PowerBG
 
@@ -200,26 +199,32 @@ function oUF_DArc_AddHealthPowerBar(self, unit)
 end
 
 function oUF_DArc_AddLevelBlock(self, unit)
-  self.Level = CreateFrame('Frame', nil, self)
-  self.Level:SetHeight( barheight - ( 2 * border_width ) )
-  self.Level:SetWidth( frame_pct_offset * 3 / 5 )
-  self.Level:SetBackdrop( back_edge )
-  self.Level:SetBackdropColor( 0, 0, 0, alpha )
-  if ( unit == "target" or unit == "targettarget" ) then
-    self.Level:SetPoint( 'TOPLEFT', self, 'TOPRIGHT', 2.5 * border_width, -border_width )
-  else
-    self.Level:SetPoint( 'TOPRIGHT', self, 'TOPLEFT', -3.5 * border_width, -border_width )
-  end
+--  if( oUF_DArc_SavedVars.ShowLevel[unit] ) then
+    self.Level = CreateFrame('Frame', nil, self)
+    self.Level:SetHeight( barheight - ( 2 * border_width ) )
+    self.Level:SetWidth( frame_pct_offset * 3 / 5 )
+    self.Level:SetBackdrop( back_edge )
+    self.Level:SetBackdropColor( 0, 0, 0, alpha )
+    if ( unit == "target" or unit == "targettarget" ) then
+      self.Level:SetPoint( 'TOPLEFT', self, 'TOPRIGHT', 2.5 * border_width, -border_width )
+    else
+      self.Level:SetPoint( 'TOPRIGHT', self, 'TOPLEFT', -3.5 * border_width, -border_width )
+    end
 
-  local unitlevel = self.Level:CreateFontString(nil, 'OVERLAY', num_font)
-  self:Tag( unitlevel, '[DArc:level]' )
-  unitlevel:SetPoint( 'CENTER', self.Level, 'CENTER' )
+    local unitlevel = self.Level:CreateFontString(nil, 'OVERLAY', num_font)
+    self:Tag( unitlevel, '[DArc:level]' )
+    unitlevel:SetPoint( 'CENTER', self.Level, 'CENTER' )
+--  else
+    -- do nothing
+--  end
 end
 
 function oUF_DArc_AddSecondaryPowerBar(self, unit)
   self.Power = CreateFrame('StatusBar', nil, self)
   self.Power:SetStatusBarTexture(bartexture)
-  self.Power:SetHeight( barheight / 2 )
+  self.Power:SetHeight( barheight - ( 2 * border_width ) )
+  self.Power:SetBackdrop( back_edge )
+  self.Power:SetBackdropColor( 0, 0, 0, alpha )
   self.Power:SetWidth( ( frame_width + extra_width ) - frame_height )
 
   self.Power:SetParent(self)
