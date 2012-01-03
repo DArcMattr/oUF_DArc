@@ -4,6 +4,27 @@ local frame_height = 72
 local barheight = floor( frame_height * .3 )
 local cp_height = 5
 
+-- from P3Lim http://www.wowinterface.com/forums/showpost.php?p=250227&postcount=6
+for _, menu in pairs( UnitPopupMenus ) do
+  for button, name in pairs(menu) do
+    if( name == 'SET_FOCUS') then
+      table.remove(menu, button)
+    elseif( name == 'CLEAR_FOCUS') then
+      table.remove(menu, button)
+    elseif( name == 'MOVE_PLAYER_FRAME') then
+      table.remove(menu, button)
+    elseif( name == 'MOVE_TARGET_FRAME') then
+      table.remove(menu, button)
+    elseif( name == 'LOCK_FOCUS_FRAME') then
+      table.remove(menu, button)
+    elseif( name == 'UNLOCK_FOCUS_FRAME') then
+      table.remove(menu, button)
+    elseif( name == 'PET_DISMISS') then
+      table.remove(menu, button)
+    end
+  end
+end
+
 local function LayoutPlayer(self, unit)
   oUF_DArc_SetupFrame(self)
   self:SetSize( ( frame_width + extra_width ), frame_height )
