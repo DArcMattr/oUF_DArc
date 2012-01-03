@@ -17,11 +17,8 @@ local back_edge = {
   edgeSize = border_width,
 }
 
-local plain_text_font = CreateFont('text_font')
-plain_text_font:SetFont([[Interface\AddOns\tekticles\Calibri.ttf]], 12, 'OUTLINE')
-
-local numbers_font = CreateFont('num_font')
-numbers_font:SetFont([[Interface\AddOns\SharedMediaAdditionalFonts\fonts\Accidental Presidency.ttf]], 12, 'OUTLINE')
+local txt_font = 'SystemFont_Med1'
+local num_font = 'SystemFont_Outline_Small'
 
 local barheight = floor( frame_height * .3 )
 
@@ -115,7 +112,7 @@ function oUF_DArc_AddNameBar(self, unit)
     self.Namebar:SetStatusBarColor( 0, 0, 0, alpha )
   end
 
-  local unitname = self.Namebar:CreateFontString(nil, 'OVERLAY', 'text_font')
+  local unitname = self.Namebar:CreateFontString(nil, 'OVERLAY', txt_font)
   self:Tag( unitname, '[DArc:name]' )
   unitname:SetPoint( 'CENTER', self.Namebar )
 end
@@ -123,7 +120,7 @@ end
 function oUF_DArc_AddHealthPowerBar(self, unit)
   self.HealthPower = CreateFrame('Frame', nil, self)
   self.HealthPower:SetParent(self)
-  self.HealthPower:SetHeight( frame_height - barheight - ( 2 * border_width ) )
+  self.HealthPower:SetHeight( frame_height - barheight - ( 5 / 3 * border_width ) )
   self.HealthPower:SetWidth( ( frame_width + extra_width ) - frame_height )
   self.HealthPower:SetBackdrop(back_edge)
   self.HealthPower:SetBackdropColor( 0, 0, 0, alpha )
@@ -147,12 +144,12 @@ function oUF_DArc_AddHealthPowerBar(self, unit)
 
   self.Health.bg = HealthBG
 
-  local health = self.Health:CreateFontString(nil, 'OVERLAY', 'num_font')
+  local health = self.Health:CreateFontString(nil, 'OVERLAY', num_font)
   health:SetPoint('CENTER', self.Health)
   self:Tag(health,'[curhp]/[maxhp]' )
 
-  local healthpercent = self.Health:CreateFontString(nil, 'OVERLAY', 'num_font')
-  healthpercent:SetPoint('RIGHT', self.Health, frame_pct_offset, 0)
+  local healthpercent = self.Health:CreateFontString(nil, 'OVERLAY', num_font)
+  healthpercent:SetPoint('RIGHT', self.Health,  5 / 4 * frame_pct_offset, 0)
   self:Tag(healthpercent,'[perhp]%')
 
   self.Health.PostUpdate = function( self, unit )
@@ -177,7 +174,7 @@ function oUF_DArc_AddHealthPowerBar(self, unit)
   self.Power:SetFrameLevel(5)
   self.Power.frequentUpdates = true
 
-  local power_txt = self.Power:CreateFontString( nil, 'OVERLAY', 'num_font' )
+  local power_txt = self.Power:CreateFontString( nil, 'OVERLAY', num_font )
   power_txt:SetPoint( 'CENTER', self.Power )
   self:Tag( power_txt, '[curpp]/[maxpp]' )
 
@@ -187,8 +184,8 @@ function oUF_DArc_AddHealthPowerBar(self, unit)
   
   self.Power.bg = PowerBG
 
-  local powerpercent = self.Power:CreateFontString( nil, 'OVERLAY', 'num_font' )
-  powerpercent:SetPoint( 'RIGHT', self.Power, frame_pct_offset, 0)
+  local powerpercent = self.Power:CreateFontString( nil, 'OVERLAY', num_font )
+  powerpercent:SetPoint( 'RIGHT', self.Power,  5 / 4 * frame_pct_offset, 0)
   self:Tag( powerpercent, '[perpp]%' )
 
   self.Power.PostUpdate = function( self, unit )
@@ -209,12 +206,12 @@ function oUF_DArc_AddLevelBlock(self, unit)
   self.Level:SetBackdrop( back_edge )
   self.Level:SetBackdropColor( 0, 0, 0, alpha )
   if ( unit == "target" or unit == "targettarget" ) then
-    self.Level:SetPoint( 'TOPLEFT', self, 'TOPRIGHT', 4 * border_width, -border_width )
+    self.Level:SetPoint( 'TOPLEFT', self, 'TOPRIGHT', 2.5 * border_width, -border_width )
   else
-    self.Level:SetPoint( 'TOPRIGHT', self, 'TOPLEFT', -4 * border_width, -border_width )
+    self.Level:SetPoint( 'TOPRIGHT', self, 'TOPLEFT', -3.5 * border_width, -border_width )
   end
 
-  local unitlevel = self.Level:CreateFontString(nil, 'OVERLAY', 'num_font')
+  local unitlevel = self.Level:CreateFontString(nil, 'OVERLAY', num_font)
   self:Tag( unitlevel, '[DArc:level]' )
   unitlevel:SetPoint( 'CENTER', self.Level, 'CENTER' )
 end
@@ -233,7 +230,7 @@ function oUF_DArc_AddSecondaryPowerBar(self, unit)
   self.Power:SetFrameLevel(5)
   self.Power.frequentUpdates = true
 
-  local power = self.Power:CreateFontString( nil, 'OVERLAY', 'num_font' )
+  local power = self.Power:CreateFontString( nil, 'OVERLAY', num_font )
   power:SetPoint( 'CENTER', self.Power )
   self:Tag( power, '[curpp]/[maxpp]' )
 end
@@ -298,11 +295,11 @@ function oUF_DArc_AddCastBar(self, x, y)
   self.Castbar:SetAllPoints()
   self.Castbar:SetFrameLevel(6)
 
-  self.Castbar.Text = self.Castbar:CreateFontString(nil, 'OVERLAY', 'text_font')
+  self.Castbar.Text = self.Castbar:CreateFontString(nil, 'OVERLAY', txt_font)
   self.Castbar.Text:SetPoint('LEFT', self.Castbar, barheight + 2, 0)
   self.Castbar.Text:SetTextColor(1, 1, 1)
 
-  self.Castbar.Time = self.Castbar:CreateFontString(nil, 'OVERLAY', 'num_font')
+  self.Castbar.Time = self.Castbar:CreateFontString(nil, 'OVERLAY', num_font)
   self.Castbar.Time:SetPoint('RIGHT', self.Castbar, -3, 0)
   self.Castbar.Time:SetTextColor(1, 1, 1)
 

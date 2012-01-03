@@ -2,11 +2,8 @@ local bartexture = [[Interface\AddOns\SharedMedia\statusbar\minimalist.tga]]
 local backdrop = {bgFile = [=[Interface\ChatFrame\ChatFrameBackground]=], insets = {top = -2, left = -2, bottom = -2, right = -2}}
 local target_bg = {bgFile = [=[Interface\ChatFrame\ChatFrameBackground]=], insets = {top = -3, left = -3, bottom = -3, right = -3}}
 
-local plain_text_font = CreateFont('text_font')
-plain_text_font:SetFont([[Interface\AddOns\tekticles\Calibri.ttf]], 13, 'OUTLINE')
-
-local numbers_font = CreateFont('num_font')
-numbers_font:SetFont([[Interface\AddOns\SharedMediaAdditionalFonts\fonts\Accidental Presidency.ttf]], 12, 'OUTLINE')
+local txt_font = 'SystemFont_Med1'
+local num_font = 'SystemFont_Outline_Small'
 
 local raid
 
