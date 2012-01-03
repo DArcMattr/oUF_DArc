@@ -141,7 +141,7 @@ function oUF_DArc_GenerateColorPicker(parent, var, func, text, x, y)
   button:SetScript("OnUpdate",
     function()
       if( var ~= nil ) then
-        button.color_sample:SetTexture(unpack(var))
+--        button.color_sample:SetTexture(unpack(var))
       end
     end
   );

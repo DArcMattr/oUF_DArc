@@ -139,8 +139,8 @@ function oUF_DArc_AddHealthPowerBar(self, unit)
   self.Health:SetFrameLevel(5)
 
   local HealthBG = self.Health:CreateTexture( nil, 'BACKGROUND' )
---  HealthBG:SetAllPoints(self.health)
---  HealthBG:SetTexture( 0, 0, 0, alpha)
+  HealthBG:SetAllPoints(self.Health)
+  HealthBG:SetTexture( 0, 0, 0, alpha)
 
   self.Health.bg = HealthBG
 
@@ -149,7 +149,7 @@ function oUF_DArc_AddHealthPowerBar(self, unit)
   self:Tag(health,'[curhp]/[maxhp]' )
 
   local healthpercent = self.Health:CreateFontString(nil, 'OVERLAY', num_font)
-  healthpercent:SetPoint('RIGHT', self.Health,  5 / 4 * frame_pct_offset, 0)
+  healthpercent:SetPoint('RIGHT', self.Health,  5 / 4 * frame_pct_offset + 1, 0)
   self:Tag(healthpercent,'[perhp]%')
 
   self.Health.PostUpdate = function( self, unit )
@@ -166,7 +166,7 @@ function oUF_DArc_AddHealthPowerBar(self, unit)
   self.Power:SetStatusBarTexture( bartexture )
   self.Power:SetParent( self )
   self.Power:SetPoint( 'TOPLEFT', self.Health, 'BOTTOMLEFT' )
-  self.Power:SetHeight( frame_height * .2 )
+  self.Power:SetHeight( frame_height * .2 + 2 )
   self.Power:SetWidth( ( frame_width + extra_width ) - frame_height - frame_pct_offset - ( 2 * border_width ) )
 
   self.Power.colorPower = true
@@ -179,13 +179,13 @@ function oUF_DArc_AddHealthPowerBar(self, unit)
   self:Tag( power_txt, '[curpp]/[maxpp]' )
 
   local PowerBG  = self.Power:CreateTexture( nil, 'BACKGROUND' )
---  PowerBG:SetAllPoints(self.Power)
---  PowerBG:SetTexture( 0, 0, 0, alpha)
+  PowerBG:SetAllPoints(self.Power)
+  PowerBG:SetTexture( 0, 0, 0, alpha)
   
   self.Power.bg = PowerBG
 
   local powerpercent = self.Power:CreateFontString( nil, 'OVERLAY', num_font )
-  powerpercent:SetPoint( 'RIGHT', self.Power,  5 / 4 * frame_pct_offset, 0)
+  powerpercent:SetPoint( 'RIGHT', self.Power,  5 / 4 * frame_pct_offset + 1, 0)
   self:Tag( powerpercent, '[perpp]%' )
 
   self.Power.PostUpdate = function( self, unit )

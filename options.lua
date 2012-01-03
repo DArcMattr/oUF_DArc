@@ -167,10 +167,10 @@ local oUF_DArc_Defaults = {
     },
     ["castbar"]           = { 128/255, 255/255, 128/255 },
     ["totems"] = {
-      ["fire_slot"]   = { 255/255, 165/255,   0/255 },
-      ["earth_slot"]  = { 074/255, 142/255, 041/255 },
-      ["water_slot"]  = { 057/255, 146/255, 181/255 },
-      ["air_slot"]    = { 132/255, 056/255, 231/255 },
+      { 255/255, 165/255,   0/255 }, -- fire
+      { 074/255, 142/255, 041/255 }, -- earth
+      { 057/255, 146/255, 181/255 }, -- water
+      { 132/255, 056/255, 231/255 }, -- air
     },
   },
 };
@@ -205,17 +205,19 @@ end
 local function GetColor(restore)
   local newR, newG, newB, newA
 
-  if restore then
-    newR, newG, newB, newA = unpack(restore);
-  else
-    newA, newR, newG, newB = OpacitySliderFrame:GetValue(), ColorPickerFrame:GetColorRGB();
-  end
+--  if restore then
+--    newR, newG, newB, newA = unpack(restore);
+--  else
+--    newA, newR, newG, newB = OpacitySliderFrame:GetValue(), ColorPickerFrame:GetColorRGB();
+--  end
 
-  return {newR, newG, newB, newA}
+--  return {newR, newG, newB, newA}
+  return restore
 end
 
 function oUF_DArc_SaveColors(var, restore)
-  var = GetColor(restore)
+--  var = GetColor(restore)
+  return var 
 end
 
 local panels = {}
